@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev Tools Portal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --neon: #00f0ff;
+        --dark-bg: #0f0f0f;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --card-border: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background: var(--dark-bg);
+        color: #fff;
+        overflow-x: hidden;
+      }
+
+      header {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: radial-gradient(
+          circle at top left,
+          #360072,
+          transparent 90%
+        );
+      }
+
+      header h1 {
+        font-size: 3rem;
+        background: linear-gradient(90deg, #00f0ff, #7bffce);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+
+      header p {
+        color: #aaa;
+        font-size: 1.1rem;
+        margin: 1rem auto 2rem;
+        max-width: 600px;
+      }
+
+      .cta-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(90deg, #00f0ff, #7bffce);
+        color: #000;
+        font-weight: 600;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: transform 0.2s ease;
+      }
+
+      .cta-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .tools-section {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .tool-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);
+        cursor: pointer;
+        backdrop-filter: blur(1px) saturate(109%);
+        -webkit-backdrop-filter: blur(1px) saturate(109%);
+        background-color: rgba(17, 25, 40, 0);
+        /* border-radius: 12px; */
+        /* border: 1px solid rgba(255, 255, 255, 0.125); */
+      }
+
+      .tool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      }
+
+      .tool-card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+        color: var(--neon);
+      }
+
+      .tool-card p {
+        font-size: 0.95rem;
+        color: #ccc;
+      }
+      .link{
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+      }
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        font-size: 0.9rem;
+        color: #666;
+        border-top: 1px solid #222;
+        margin-top: 4rem;
+      }
+
+      @media (max-width: 500px) {
+        header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Dev Tools Portal</h1>
+      <p>Your ultimate collection of simple yet powerful developer utilities</p>
+      <button class="cta-btn">Explore Tools 🚀</button>
+    </header>
+
+    <section class="tools-section" id="tools-section">
+      <div class="tool-card">
+        <a href="../Password-Generator/index.html" class="link" target="_blank" >
+          <h2>Password Generator</h2>
+          <p>Secure, random passwords with custom length and symbols.</p>
+        </a>
+      </div>
+      <div class="tool-card">
+        <a href="../QR Generator/index.html" class="link" target="_blank" >
+        <h2>QR Code Generator</h2>
+        <p>Create QR codes from URLs, text, and more instantly.</p>
+        </a>
+      </div>
+      <div class="tool-card">
+        <h2>To-Do List</h2>
+        <p>Manage your tasks with a clean, focused interface.</p>
+      </div>
+      <div class="tool-card">
+        <h2>Markdown Previewer</h2>
+        <p>Convert markdown to HTML on-the-fly as you type.</p>
+      </div>
+      <div class="tool-card">
+        <h2>Color Picker</h2>
+        <p>Choose colors and copy HEX or RGB codes easily.</p>
+      </div>
+      <div class="tool-card">
+        <h2>Word Counter</h2>
+        <p>Analyze your text: words, characters, and more.</p>
+      </div>
+    </section>
+
+    <footer>&copy; 2025 Dev Tools Portal | 🛠️Crafted by <a
+      href="https://trivickram.vercel.app"
+      target="_blank"
+      style="color: #00f0ff; text-decoration: none "
+      > &nbspTrivikram</a
+    ></footer>
+  </body>
+</html>
