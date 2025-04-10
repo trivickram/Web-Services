@@ -7,17 +7,38 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    /* padding: 2rem; */
     min-height: 90vh;
+    width: 100%;
+  }
+  header {
+    text-align: center;
+    padding: 2rem 1rem;
+    width: 100%;
+    margin-top: -20px;
+    background: radial-gradient(
+      circle at top left,
+      #23385e,
+      transparent 90%
+    );
+    margin-bottom: 30px;
   }
 
+  header h1 {
+    font-size: 3rem;
+    background: linear-gradient(90deg, #00f0ff, #7bffce);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
   h1 {
     color: #00f0ff;
     margin-bottom: 1rem;
   }
 
   input {
-    width: 100%;
+    width: 85%;
     max-width: 400px;
     padding: 0.75rem;
     border: none;
@@ -47,6 +68,7 @@ body {
     background: white;
     padding: 1rem;
     border-radius: 10px;
+    margin-bottom: 40px;
   }
   footer{
     background-color: #111;
