@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="styles.css" />
     <meta
       name="description"
       content="Generate strong, secure passwords instantly with our online password generator. Customize your password with uppercase, lowercase, numbers, and special characters."
@@ -53,110 +54,6 @@
     />
 
     <title>Password Generator</title>
-    <style>
-      body {
-        font-family: cursive;
-        background-image: linear-gradient(to bottom, #006994, lightblue);
-        /* background-color: black; */
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-
-      .container {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        width: 400px;
-        border-radius: 10px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        text-align: center;
-      }
-
-      h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        font-weight: 700;
-        color: #1c1160;
-      }
-      .option-container {
-        display: flex;
-        align-items: center;
-        font-weight: 900;
-        width: 90%;
-        justify-content: space-between;
-        background-color: #70afb1;
-        border-radius: 50px;
-        padding: 12px;
-        margin-bottom: 10px;
-        cursor: pointer;
-      }
-
-      .checkmark {
-        position: relative;
-        height: 1.6em;
-        width: 1.6em;
-        border-radius: 50%;
-        background: #7700ff38;
-        transition: all 0.2s ease;
-        opacity: 0.5;
-      }
-
-      .container input[type="checkbox"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-      }
-
-      .container input:checked ~ .checkmark {
-        background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-        opacity: 0.9;
-      }
-
-      .length-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #70afb1;
-        border-radius: 50px;
-        font-weight: 900;
-        padding: 12px;
-        margin-bottom: 10px;
-        width: 90%;
-      }
-
-      .length-container input {
-        width: 70px;
-        text-align: center;
-        border: none;
-        border-radius: 50px;
-        padding: 5px;
-        font-size: 16px;
-      }
-      .generate-btn {
-        margin-top: 10px;
-        padding: 10px 20px;
-        background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .generate-btn:hover {
-        background-color: #145ca8;
-      }
-
-      .output {
-        margin-top: 20px;
-        font-weight: bold;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
@@ -194,40 +91,6 @@
       </button>
       <div class="output" id="passwordOutput"></div>
     </div>
-
-    <script>
-      function generatePassword() {
-        const length = document.getElementById("length").value || 12;
-        const includeUppercase = document.getElementById("uppercase").checked;
-        const includeLowercase = document.getElementById("lowercase").checked;
-        const includeNumbers = document.getElementById("numbers").checked;
-        const includeSpecialChars =
-          document.getElementById("specialChars").checked;
-
-        let characterPool = "";
-
-        if (includeUppercase) characterPool += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if (includeLowercase) characterPool += "abcdefghijklmnopqrstuvwxyz";
-        if (includeNumbers) characterPool += "0123456789";
-        if (includeSpecialChars)
-          characterPool += '!@#$%^&*()_+-=[]{}|;:",.<>?/';
-
-        if (!characterPool) {
-          alert("Please select at least one character type!");
-          return;
-        }
-
-        let password = "";
-
-        for (let i = 0; i < length; i++) {
-          const randomIndex = Math.floor(Math.random() * characterPool.length);
-          password += characterPool[randomIndex];
-        }
-
-        document.getElementById(
-          "passwordOutput"
-        ).textContent = `Generated Password: ${password}`;
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>

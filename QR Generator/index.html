@@ -4,69 +4,7 @@
     <meta charset="UTF-8" />
     <title>QR Code Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      body {
-        background: #0f0f0f;
-        padding: 0;
-        margin: 0;
-        font-family: "Segoe UI", sans-serif;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-        min-height: 90vh;
-      }
-
-      h1 {
-        color: #00f0ff;
-        margin-bottom: 1rem;
-      }
-
-      input {
-        width: 100%;
-        max-width: 400px;
-        padding: 0.75rem;
-        border: none;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-      }
-
-      button {
-        padding: 0.7rem 1.5rem;
-        background: linear-gradient(90deg, #00f0ff, #7bffce);
-        color: #000;
-        border: none;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-bottom: 2rem;
-        transition: transform 0.2s ease;
-      }
-
-      button:hover {
-        transform: scale(1.05);
-      }
-
-      #qrcode {
-        display: none;
-        background: white;
-        padding: 1rem;
-        border-radius: 10px;
-      }
-      footer{
-        background-color: #111;
-        color: #aaa;
-        text-align: center;
-        padding: 1rem;
-        font-size: 0.95rem;
-        margin-top: auto;
-        border-top: 1px solid #222;
-        width: 100%;
-        margin-bottom: -40px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <h1>QR Code Generator</h1>
@@ -75,28 +13,7 @@
     <div id="qrcode"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <script>
-      let qr;
-
-      function generateQR() {
-        const input = document.getElementById("qr-input").value;
-        const qrContainer = document.getElementById("qrcode");
-        qrContainer.innerHTML = "";
-
-        if (input.trim() !== "") {
-          qr = new QRCode(qrContainer, {
-            text: input,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H,
-          });
-        }
-        qrContainer.style.display = "block";
-      }
-    </script>
+    <script src="script.js"></script>
     <footer>
       <p>&copy; 2025 <strong>QR Generator</strong>. All rights reserved.</p>
       <p>
@@ -104,6 +21,7 @@
         <a
           href="https://trivickram.vercel.app"
           target="_blank"
+          rel="noopener"
           style="color: #00f0ff; text-decoration: none"
           >Trivikram</a
         >
