@@ -28,7 +28,8 @@
 * {
   box-sizing: border-box;
   transition: background 0.3s ease, color 0.3s ease;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif,
+    sans-serif;
 }
 
 body {
@@ -39,16 +40,23 @@ body {
   padding: 2rem;
 }
 
-.top-bar {
+h1 {
+  color: #0ea5e9;
+  font-size: xx-large;
+  font-weight: 900;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 1rem;
 }
-
-.top-bar h1 {
-  margin: 0;
-  font-size: 1.5rem;
+header {
+  border: #e0e0e0;
+  margin-top: -30px;
+  border-bottom:1px solid #0ea5e9;
+  border-left: -10px solid #0ea5e9;
+  border-right: -10px solid #0ea5e9;
+    padding: 0.5rem;
+margin-bottom: 25px;
 }
 
 .toggle-btn {

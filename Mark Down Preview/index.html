@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-  <div class="top-bar">
+<header>
+  
     <h1>Markdown Previewer</h1>
-    <button class="toggle-btn" onclick="toggleTheme()">Toggle Theme</button>
-  </div>
-
+  </header>
+  
+  <button class="toggle-btn" onclick="toggleTheme()">Toggle Theme</button>
   <div class="editor-preview">
     <textarea id="markdownInput" placeholder="# Hello World ✨" oninput="renderPreview()"></textarea>
     <div class="preview" id="markdownPreview"></div>
