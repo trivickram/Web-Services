@@ -32,6 +32,7 @@
         font-size: 3rem;
         background: linear-gradient(90deg, #00f0ff, #7bffce);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 700;
       }

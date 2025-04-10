@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Word Counter</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <header><h1 class="main-head">Word Counter</h1></header>
+  <div class="top-bar">
+    
+
+  </div>
+
+  <textarea id="textInput" placeholder="Type or paste your text here..." oninput="updateStats()"></textarea>
+
+  <div class="buttons">
+    <button onclick="convertCase('upper')">UPPERCASE</button>
+    <button onclick="convertCase('lower')">lowercase</button>
+    <button onclick="convertCase('title')">Title Case</button>
+    <button onclick="copyText()">Copy</button>
+    <button onclick="clearText()">Clear</button>
+    <button onclick="downloadText()">Download</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><h3>Words</h3><p id="wordCount">0</p></div>
+    <div class="stat-card"><h3>Characters</h3><p id="charCount">0</p></div>
+    <div class="stat-card"><h3>No Spaces</h3><p id="charNoSpace">0</p></div>
+    <div class="stat-card"><h3>Sentences</h3><p id="sentenceCount">0</p></div>
+    <div class="stat-card"><h3>Paragraphs</h3><p id="paraCount">0</p></div>
+    <div class="stat-card"><h3>Reading Time</h3><p id="readTime">0 min</p></div>
+    <div class="stat-card"><h3>Speaking Time</h3><p id="speakTime">0 min</p></div>
+    <div class="stat-card"><h3>Top Keywords</h3><p id="keywordFrequency">None</p></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 <strong>Word Counter</strong>. All rights reserved.</p>
+    <p>
+      Built with ❤️ by
+      <a
+        href="https://trivickram.vercel.app"
+        target="_blank"
+        rel="noopener"
+        style="color: #00f0ff; text-decoration: none"
+        >Trivikram</a
+      >
+    </p>
+  </footer>
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>
