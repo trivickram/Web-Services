@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Word Counter</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<style>
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #e0e0e0;
+    --card-dark: #1e1e1e;
+    --border-dark: #333;
+    --accent: #0ea5e9;
+
+    --bg-light: #f9f9f9;
+    --text-light: #1a1a1a;
+    --card-light: #ffffff;
+    --border-light: #ccc;
+  }
+
+  [data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --text: var(--text-dark);
+    --card: var(--card-dark);
+    --border: var(--border-dark);
+  }
+
+  [data-theme="light"] {
+    --bg: var(--bg-light);
+    --text: var(--text-light);
+    --card: var(--card-light);
+    --border: var(--border-light);
+  }
+
+  header {
+    text-align: center;
+    padding: 1rem 1rem;
+    background: radial-gradient(
+      circle at top left,
+      #0b426e,
+      transparent 90%
+    );
+    width: 100%;
+  }
+
+  header h1 {
+    font-size: 9rem;
+    background: linear-gradient(90deg, #f2ff00, #7bffce);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+
+  }
+
+  * {
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    /* padding: 2rem; */
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+  .main-head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-bottom: 2rem; */
+    color: #0ea5e9;
+    font-size: 4rem;
+    /* margin: auto; */
+  
+  }
+  
+  .top-bar {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+
+  .toggle-btn {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 1000px;
+    height: 250px;
+    padding: 1rem;
+    background-color: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    resize: none;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    background-color: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--accent);
+    color: white;
+  }
+
+  .stats-grid {
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .stat-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+
+  .stat-card p {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  footer{
+    background-color: #111;
+    color: #aaa;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.95rem;
+    margin-top: auto;
+    border-top: 1px solid #222;
+    width: 100%;
+    margin-bottom: -40px;
+  }
+</style>
+<body>
+    <header>
+      <h1 class="main-head">Word Counter</h1>
+      <p>Count words, characters, and more!</p>
+    </header>
+  <div class="top-bar">
+    
+
+  </div>
+
+  <textarea id="textInput" placeholder="Type or paste your text here..." oninput="updateStats()"></textarea>
+
+  <div class="buttons">
+    <button onclick="convertCase('upper')">UPPERCASE</button>
+    <button onclick="convertCase('lower')">lowercase</button>
+    <button onclick="convertCase('title')">Title Case</button>
+    <button onclick="copyText()">Copy</button>
+    <button onclick="clearText()">Clear</button>
+    <button onclick="downloadText()">Download</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><h3>Words</h3><p id="wordCount">0</p></div>
+    <div class="stat-card"><h3>Characters</h3><p id="charCount">0</p></div>
+    <div class="stat-card"><h3>No Spaces</h3><p id="charNoSpace">0</p></div>
+    <div class="stat-card"><h3>Sentences</h3><p id="sentenceCount">0</p></div>
+    <div class="stat-card"><h3>Paragraphs</h3><p id="paraCount">0</p></div>
+    <div class="stat-card"><h3>Reading Time</h3><p id="readTime">0 min</p></div>
+    <div class="stat-card"><h3>Speaking Time</h3><p id="speakTime">0 min</p></div>
+    <div class="stat-card"><h3>Top Keywords</h3><p id="keywordFrequency">None</p></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 <strong>Word Counter</strong>. All rights reserved.</p>
+    <p>
+      Built with ❤️ by
+      <a
+        href="https://trivickram.vercel.app"
+        target="_blank"
+        rel="noopener"
+        style="color: #00f0ff; text-decoration: none"
+        >Trivikram</a
+      >
+    </p>
+  </footer>
+<script>
+  function updateStats() {
+    const text = document.getElementById("textInput").value.trim();
+    const words = text.match(/\b\w+\b/g) || [];
+    const sentences = text.split(/[.!?]+/).filter(Boolean);
+    const paragraphs = text.split(/\n+/).filter(p => p.trim() !== '');
+    const charsWithSpace = text.length;
+    const charsNoSpace = text.replace(/\s/g, "").length;
+
+    document.getElementById("wordCount").innerText = words.length;
+    document.getElementById("charCount").innerText = charsWithSpace;
+    document.getElementById("charNoSpace").innerText = charsNoSpace;
+    document.getElementById("sentenceCount").innerText = sentences.length;
+    document.getElementById("paraCount").innerText = paragraphs.length;
+
+    const readTime = Math.ceil(words.length / 200);
+    const speakTime = Math.ceil(words.length / 130);
+    document.getElementById("readTime").innerText = `${readTime} min`;
+    document.getElementById("speakTime").innerText = `${speakTime} min`;
+
+    const freqMap = {};
+    words.forEach(word => {
+      const lower = word.toLowerCase();
+      freqMap[lower] = (freqMap[lower] || 0) + 1;
+    });
+
+    const freqOutput = Object.entries(freqMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([word, freq]) => `${word} (${freq})`)
+      .join(", ");
+    document.getElementById("keywordFrequency").innerText = freqOutput || 'None';
+  }
+
+  function convertCase(type) {
+    const textArea = document.getElementById("textInput");
+    let text = textArea.value;
+    if (type === "upper") textArea.value = text.toUpperCase();
+    if (type === "lower") textArea.value = text.toLowerCase();
+    if (type === "title") {
+      textArea.value = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    }
+    updateStats();
+  }
+
+  function copyText() {
+    const text = document.getElementById("textInput");
+    text.select();
+    document.execCommand("copy");
+    alert("Copied to clipboard!");
+  }
+
+  function clearText() {
+    document.getElementById("textInput").value = "";
+    updateStats();
+  }
+
+  function downloadText() {
+    const text = document.getElementById("textInput").value;
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.download = "word-count-text.txt";
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+  }
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
+  }
+
+  updateStats();
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>

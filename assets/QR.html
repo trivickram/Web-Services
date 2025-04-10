@@ -1,4 +1,13 @@
-body {
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>QR Code Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <style>
+    body {
     background: #0f0f0f;
     padding: 0;
     margin: 0;
@@ -81,3 +90,52 @@ body {
     width: 100%;
     margin-bottom: -40px;
   }
+  </style>
+  <body>
+    <header>
+      <h1>QR Code Generator</h1>
+      <p>Generate QR codes for any text or URL!</p>
+    </header>
+    
+    <input type="text" id="qr-input" placeholder="Enter text or URL..." />
+    <button onclick="generateQR()">Generate QR Code</button>
+    <div id="qrcode"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+    <footer>
+      <p>&copy; 2025 <strong>QR Generator</strong>. All rights reserved.</p>
+      <p>
+        Built with ❤️ by
+        <a
+          href="https://trivickram.vercel.app"
+          target="_blank"
+          rel="noopener"
+          style="color: #00f0ff; text-decoration: none"
+          >Trivikram</a
+        >
+      </p>
+    </footer>
+    <script>
+      let qr;
+
+function generateQR() {
+  const input = document.getElementById("qr-input").value;
+  const qrContainer = document.getElementById("qrcode");
+  qrContainer.innerHTML = "";
+
+  if (input.trim() !== "") {
+    qr = new QRCode(qrContainer, {
+      text: input,
+      width: 200,
+      height: 200,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+  }
+  qrContainer.style.display = "block";
+}
+    </script>
+  </body>
+</html>
