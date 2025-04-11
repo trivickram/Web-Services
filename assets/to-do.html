@@ -3,8 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo app</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>To-Do List - Organize Tasks & Boost Productivity | DevTools</title>
+    <meta
+      name="description"
+      content="Stay organized and boost productivity with this simple and efficient To-Do List tool. Manage your tasks, set priorities, and track progress easily with a sleek dark theme."
+    />
+    <meta
+      name="keywords"
+      content="to-do list, task manager, productivity tool, task organizer, simple to-do list, online task manager, productivity tracker, to-do app, task scheduler"
+    />
+    <meta name="author" content="Baratam Trivickram" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="To-Do List - Organize Tasks & Boost Productivity | DevTools"
+    />
+    <meta
+      property="og:description"
+      content="A simple, effective, and beautiful To-Do List tool to organize your tasks, manage priorities, and increase productivity. Built for developers, students, and professionals."
+    />
+    <meta
+      property="og:url"
+      content="https://devnestle.vercel.app/assets/to-do.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="To-Do List - Organize Tasks & Boost Productivity | DevTools"
+    />
+    <meta
+      name="twitter:description"
+      content="Manage your tasks with ease using our To-Do List tool. Stay on top of your goals and boost your productivity with this simple, easy-to-use tool."
+    />
   </head>
   <style>
     * {
@@ -88,7 +119,7 @@
     .stats-numbers {
       width: 150px;
       height: 100px;
-      background-color: var(--purple);
+      background-color: #363858;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -182,38 +213,36 @@
       cursor: pointer;
       color: darkorchid;
     }
-    footer{
-    background-color: #111;
-    color: #aaa;
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.95rem;
-    margin-top: auto;
-    border-top: 1px solid #222;
-    width: 100%;
-    margin-bottom: -40px;
-  }
-  .main-head {
-    /* background: linear-gradient(90deg, #a855f7, #06b6d4, #9333ea, #22d3ee); */
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: revert;
-    font-size: 3.9rem;
-    text-align: center; /* Added text alignment */  
-  }
+    footer {
+      background-color: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.95rem;
+      margin-top: auto;
+      border-top: 1px solid #222;
+      width: 100%;
+      margin-bottom: -40px;
+    }
+    .main-head {
+      /* background: linear-gradient(90deg, #a855f7, #06b6d4, #9333ea, #22d3ee); */
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: revert;
+      font-size: 3.9rem;
+      text-align: center; /* Added text alignment */
+    }
   </style>
   <body>
     <header>
-      <h1 class="main-head">
-       To-Do List
-      </h1>
-      <p style="color: #ff0787;">Keep track of your tasks!</p>
+      <h1 class="main-head">To-Do List</h1>
+      <p style="color: #ff0787">Keep track of your tasks!</p>
     </header>
     <div class="container">
       <div class="stats-container">
         <div class="details">
-          <h1>To-do </h1>
+          <h1>To-do</h1>
           <p>keep it up!</p>
           <div id="progressBar">
             <div id="progress"></div>
@@ -357,7 +386,7 @@
           href="https://trivickram.vercel.app"
           target="_blank"
           rel="noopener"
-          style="color: #00f0ff; text-decoration: none"
+          style="color: #00f0ff; text-decoration: underline"
           >Trivikram</a
         >
       </p>
