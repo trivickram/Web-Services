@@ -4,8 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Color Picker Tool</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+<!-- Primary Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Picker - Pick & Copy HEX/RGB Instantly | DevTools</title>
+<meta name="description" content="A sleek and powerful color picker tool to choose and copy HEX or RGB codes instantly. Supports color palettes, live preview, and easy sharing. Ideal for developers and designers.">
+
+<!-- SEO Meta -->
+<meta name="keywords" content="color picker, HEX, RGB, color tool, web color, developer tools, color codes, color palette generator, UI design, frontend">
+<meta name="author" content="Baratam Trivickram">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content="Color Picker - Pick & Copy HEX/RGB Instantly | DevTools">
+<meta property="og:description" content="Choose colors and copy HEX/RGB codes easily. Built for developers and designers with a clean, dark GitHub-inspired theme.">
+<meta property="og:url" content="https://https://devnestle.vercel.app/assets/colorpicker.html">
+<meta property="og:type" content="website">
+
+<!-- Twitter Meta -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Color Picker - Pick & Copy HEX/RGB Instantly | DevTools">
+<meta name="twitter:description" content="Quickly pick and copy HEX or RGB colors with a clean, developer-friendly interface.">
+
+
+ 
 </head>
 <body>
   <style>
@@ -142,16 +164,19 @@ footer {
   text-align: center;
   padding: 2rem 1rem;
   font-size: 0.9rem;
-  color: #666;
-  border-top: 1px solid #222;
+  font-weight:500;
+  color: #cacaca;
+  border-top: 1px solid #454545;
   margin-top: 4rem;
 }
+
   </style>
   <header>
     <h1>🎨 Color Picker Tool</h1>
     <p>Choose colors and copy HEX or RGB codes easily.</p>
   </header>
   <div class="container">
+    <label for="colorPicker" >Choose your color</label>
     <input type="color" id="colorPicker" class="color-picker">
 
     <div class="color-preview" id="colorPreview"></div>
@@ -172,13 +197,19 @@ footer {
     <div id="favorites" class="favorites"></div>
   </div>
 
-  <footer>&copy; 2025 Color Picker Tool | 🛠️Crafted by <a
-    href="https://trivickram.vercel.app"
-    target="_blank"
-    rel="noopener"
-    style="color: #00f0ff; text-decoration: none "
-    > &nbspTrivikram</a
-  ></footer>
+  <footer>
+    &copy; 2025 Color Picker Tool | 🛠️ Crafted by
+    <a
+      href="https://trivickram.vercel.app"
+      target="_blank"
+      class="link"
+      rel="noopener"
+      style="color: #00f0ff; text-decoration: underline; font-weight: 500;"
+    >
+      Trivikram
+    </a>
+  </footer>
+  
   <script>
     
 const picker = document.getElementById("colorPicker");

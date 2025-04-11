@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON Formatter & Validator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Consolas, monospace;
+      /* background-color: #0d1117; */
+      background-color: #0d1318;
+      color: #c9d1d9;
+      /* padding: 20px; */
+    }
+    header {
+    text-align: center;
+    padding: 2rem 1rem;
+    width: 100%;
+    margin-top: -20px;
+    background: radial-gradient(
+      circle at top left,
+      #5f656f,
+      transparent 90%
+    );
+    margin-bottom: 30px;
+  }
+    h1 {
+      color: #58a6ff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      padding: 10px;
+      resize: vertical;
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .buttons {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      background-color: #4256fb;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #2ea043;
+    }
+    .output {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      padding: 10px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      height: 200px;
+      overflow-y: auto;
+    }
+    .container{
+        padding: 30px;
+        margin-bottom: 6rem;
+    }
+    .error {
+      color: #ff7b72;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  background: #0d1117;
+  border-top: 1px solid #30363d;
+  color: #888;
+}
+
+  
+</style>
+</head>
+<body>
+    <header>
+        <h1>JSON Formatter & Validator</h1>
+        <p>Format and validate your JSON effortlessly!</p>
+      </header>
+ <div class="container">
+
+  <label for="json-input"><strong>Paste JSON here:</strong></label>
+  <textarea id="json-input" placeholder='{ "name": "John", "age": 30 }'></textarea>
+
+  <div class="buttons">
+    <button onclick="formatJSON()">Format</button>
+    <button onclick="copyOutput()">Copy</button>
+  </div>
+
+  <div id="error" class="error"></div>
+
+  <label for="json-output"><strong>Formatted JSON:</strong></label>
+  <div id="json-output" class="output"></div>
+
+  <script>
+    function formatJSON() {
+      const input = document.getElementById('json-input').value.trim();
+      const output = document.getElementById('json-output');
+      const error = document.getElementById('error');
+      output.textContent = '';
+      error.textContent = '';
+
+      try {
+        const parsed = JSON.parse(input);
+        const formatted = JSON.stringify(parsed, null, 2);
+        output.textContent = formatted;
+      } catch (e) {
+        error.textContent = 'Invalid JSON: ' + e.message;
+      }
+    }
+
+    function copyOutput() {
+      const outputText = document.getElementById('json-output').textContent;
+      if (!outputText) return;
+      navigator.clipboard.writeText(outputText)
+        .then(() => alert("Formatted JSON copied!"))
+        .catch(() => alert("Copy failed."));
+    }
+  </script>
+ </div>
+<footer>
+    &copy; 2025 DevToolsHub • JSON Formater Tool by <a
+    href="https://trivickram.vercel.app"
+    target="_blank"
+    rel="noopener"
+    style="color: #00f0ff; text-decoration: underline "
+    > Trivikram</a
+  >
+  </footer>
+</body>
+</html>
