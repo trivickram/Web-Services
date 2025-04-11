@@ -1,294 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo app</title>
-    <link rel="stylesheet" href="./styles.css">
-</head>
-<style>
-    *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-:root{
-  --background : #000430;
-  --secodaryBackground: #171c48;
-  --text:  #fff;
-  --purple: #828dff;
-  --teal: #24feee;
-}
-body{
-  background-color: var(--background);
-  color: var(--text);
-}
-.container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 120px;
-  margin: 120px auto 0 auto;
-  max-width: 500px;
-}
-.stats-container{
-  padding: 30px;
-  border-radius: 20px;
-  border: 2px solid var(--purple);
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  width: 100%;
-}
-.details{
-  width:100%;
-}
+    :root {
+      /* --background: #000430; */
+      --background: black;
+      /* --secodaryBackground: #171c48; */
+      --secodaryBackground: #1a3958bb;
+      --text: #fff;
+      --purple: #828dff;
+      --teal: #24feee;
+    }
+    body {
+      background-color: var(--background);
+      color: var(--text);
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 120px;
+      margin: 120px auto 0 auto;
+      max-width: 500px;
+    }
+    .stats-container {
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid var(--purple);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+    }
+    .details {
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: radial-gradient(circle at top left, #3d490a, transparent 90%);
+      width: 100%;
+      font-size: x-large;
+      margin-bottom: 30px;
+    }
 
-#progressBar{
-  width: 100%;
-  height: 10px;
-  background-color: var(--secodaryBackground);
-  border-radius: 5px;
-  margin-top: 20px;
+    header h1 {
+      background: linear-gradient(90deg, #a855f7, #06b6d4, #9333ea, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
 
-}
-#progress{
-  width: 0%;
-  height: 10px;
-  background-color: var(--teal);
-  border-radius: 30px ;
-  transition: all 0.3s ease;
+    header p {
+      color: #00ecfd;
+      font-size: 1.1rem;
+      margin: 1rem auto 2rem;
+      max-width: 600px;
+    }
+    #progressBar {
+      width: 100%;
+      height: 10px;
+      background-color: var(--secodaryBackground);
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    #progress {
+      width: 0%;
+      height: 10px;
+      background-color: var(--teal);
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
 
-}
+    .stats-numbers {
+      width: 150px;
+      height: 100px;
+      background-color: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    form {
+      margin-top: 60px;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      background: var(--secodaryBackground);
+      border: 1px solid var(--purple);
+      border-radius: 10px;
+      outline: none;
+      color: var(--text);
+    }
+    .checkbox {
+      cursor: pointer;
+      border-radius: 50%;
+      /* background-color: var(--purple); */
+      color: #24feee;
+      width: 25px;
+      height: 25px;
+      border: 2px solid var(--teal);
+      appearance: none;
+      display: inline-block;
+    }
+    .checkbox:checked {
+      background-color: var(--teal);
+      border: 2px solid var(--teal);
+    }
+    button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--purple);
+      color: var(--text);
+      font-size: 30px;
+      font-weight: bold;
+      outline: none;
+      border: none;
+      cursor: pointer;
+    }
 
-.stats-numbers{
-  width: 150px;
-  height: 100px;
-  background-color: var(--purple);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 30px;
-  font-weight: bold;
+    #task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 30px;
+      list-style: none;
+      margin-bottom: 75px;
+    }
 
-}
-form{
-  margin-top: 60px;
-  width: 100%;
-  display: flex;
-  gap: 10px;
-}
-input{
-  flex: 1;
-  padding: 10px;
-  background: var(--secodaryBackground);
-  border:1px solid var(--purple);
-  border-radius: 10px;
-  outline: none;
-  color: var(--text);
-  
-}
-button{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--purple);
-  color: var(--text);
-  font-size: 30px;
-  font-weight: bold;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
-#task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  margin-top: 30px;
-  list-style: none;
-}
-
-.taskItem{
-  display:flex;
-  width: 100%;
-  background-color: var(--secodaryBackground);
-  padding: 10px;
-  border-radius: 10px;
-  justify-content: space-between;
-  align-items: center;
-  
-}
-.task{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.task input{
-  width:20px;
-  height:20px;
-
-}
-.task.completed{
-  text-decoration: line-through;
-  color: var(--teal);
-
-
-}
-.taskItem img{
-  width: 24px;
-  height: 24px;
-  margin: 0 10px;
-  cursor: pointer;
-  color: darkorchid;
-}
-
-</style>
-<body>
+    .taskItem {
+      display: flex;
+      width: 100%;
+      background-color: var(--secodaryBackground);
+      padding: 10px;
+      border-radius: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .task input {
+      width: 20px;
+      height: 20px;
+    }
+    .task.completed {
+      text-decoration: line-through;
+      color: var(--teal);
+    }
+    .taskItem img {
+      width: 24px;
+      height: 24px;
+      margin: 0 10px;
+      cursor: pointer;
+      color: darkorchid;
+    }
+    footer{
+    background-color: #111;
+    color: #aaa;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.95rem;
+    margin-top: auto;
+    border-top: 1px solid #222;
+    width: 100%;
+    margin-bottom: -40px;
+  }
+  </style>
+  <body>
+    <header>
+      <h1>
+        <span style="color: var(--teal);">To-Do</span> 
+        <span style="color: var(--purple);">List</span>
+      </h1>
+      <p>Keep track of your tasks!</p>
+    </header>
     <div class="container">
-       <div class="stats-container">
-            <div class="details">
-                <h1>Todo app</h1>
-                <p>keep it up!</p>
-                <div id="progressBar">
-                    <div id="progress"></div>
-                </div>
-            </div>
-               <div class="stats-numbers">
-                <p id="numbers">0 / 0</p>
-               </div>
-            </div> 
-            <form action="">
-                <input id ="taskinput" type="text" placeholder="write your task">
-                <button id ="newtask" type="submit">+</button>
-            </form>
-            <ul id="task-list"></ul>
+      <div class="stats-container">
+        <div class="details">
+          <h1>Todo app</h1>
+          <p>keep it up!</p>
+          <div id="progressBar">
+            <div id="progress"></div>
+          </div>
         </div>
-               
+        <div class="stats-numbers">
+          <p id="numbers">0 / 0</p>
+        </div>
+      </div>
+      <form action="">
+        <input id="taskinput" type="text" placeholder="write your task" />
+        <button id="newtask" type="submit">+</button>
+      </form>
+      <ul id="task-list"></ul>
+    </div>
 
-        
-               
-     <script>document.addEventListener("DOMContentLoaded",()=>{
-        const storedTasks=JSON.parse(localStorage.getItem("tasks"))
-        if(storedTasks){
-            storedTasks.forEach((task)=>tasks.push(task))
-            updateTasksList();
-            updateStats();
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+        if (storedTasks) {
+          storedTasks.forEach((task) => tasks.push(task));
+          updateTasksList();
+          updateStats();
         }
-    });
-    let tasks=[];
-    const saveTasks=()=>{
-        localStorage.setItem("tasks",JSON.stringify(tasks))
-    };
-    const addtask=()=>{
-        const taskinput=document.getElementById('taskinput')
-        const text=taskinput.value.trim()
-        if(text){
-            tasks.push({text:text,completed: false});
-            taskinput.value="";
-            updateTasksList();
-            updateStats();
-            saveTasks();
+      });
+      let tasks = [];
+      const saveTasks = () => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      };
+      const addtask = () => {
+        const taskinput = document.getElementById("taskinput");
+        const text = taskinput.value.trim();
+        if (text) {
+          tasks.push({ text: text, completed: false });
+          taskinput.value = "";
+          updateTasksList();
+          updateStats();
+          saveTasks();
         }
-    };
-    
-    const toggleTaskComplete=(index) =>{
-        tasks[index].completed=!tasks[index].completed;
+      };
+
+      const toggleTaskComplete = (index) => {
+        tasks[index].completed = !tasks[index].completed;
         updateTasksList();
         updateStats();
         saveTasks();
-    };
-    const deleteTask=(index)=>{
-        tasks.splice(index,1);
+      };
+      const deleteTask = (index) => {
+        tasks.splice(index, 1);
         updateTasksList();
         updateStats();
         saveTasks();
-    };
-    const editTask=(index)=>{
-        const taskinput=document.getElementById("taskinput")
-        taskinput.value=tasks[index].text
-        tasks.splice(index,1)
+      };
+      const editTask = (index) => {
+        const taskinput = document.getElementById("taskinput");
+        taskinput.value = tasks[index].text;
+        tasks.splice(index, 1);
         updateTasksList();
         updateStats();
         saveTasks();
-    };
-    const updateStats=()=>{
-        const completedTasks=tasks.filter((task)=>task.completed).length;
-        const totalTasks=tasks.length;
-        const progress=(completedTasks/totalTasks)*100;
-        const progressBar=document.getElementById("progress");
-        progressBar.style.width=`${progress}%`;
-        document.getElementById("numbers").innerText=`${completedTasks}/${totalTasks}`;
-        if(tasks.length && completedTasks === totalTasks){
-            blastConfetti();
+      };
+      const updateStats = () => {
+        const completedTasks = tasks.filter((task) => task.completed).length;
+        const totalTasks = tasks.length;
+        const progress = (completedTasks / totalTasks) * 100;
+        const progressBar = document.getElementById("progress");
+        progressBar.style.width = `${progress}%`;
+        document.getElementById(
+          "numbers"
+        ).innerText = `${completedTasks}/${totalTasks}`;
+        if (tasks.length && completedTasks === totalTasks) {
+          blastConfetti();
         }
-    };
-    
-    const updateTasksList=()=>{
-        const taskList=document.getElementById('task-list');
-        taskList.innerHTML="";
-    
-        tasks.forEach((task,index)=>{
-            const listItem =document.createElement("li");
-    
-            listItem.innerHTML =`
+      };
+
+      const updateTasksList = () => {
+        const taskList = document.getElementById("task-list");
+        taskList.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+          const listItem = document.createElement("li");
+
+          listItem.innerHTML = `
             <div class="taskItem">
-                <div class="task ${task.completed ? "completed" :""}">
-                    <input type="checkbox" class="checkbox" ${task.completed ?"checked":""}/>
+                <div class="task ${task.completed ? "completed" : ""}">
+                    <input type="checkbox" class="checkbox" ${
+                      task.completed ? "checked" : ""
+                    }/>
                     <p>${task.text}</p>
                 </div>
                 <div class="icons">
-                    <img src="edit.png" onclick="editTask(${index})" />
-                    <img src="bin.png" onclick="deleteTask(${index})" />
+                    <img src="images/edit.png" onclick="editTask(${index})" />
+                    <img src="images/bin.png" onclick="deleteTask(${index})" />
                 </div>
             </div>
             `;
-           listItem.addEventListener("change",()=> toggleTaskComplete(index));
-           taskList.append(listItem);
+          listItem.addEventListener("change", () => toggleTaskComplete(index));
+          taskList.append(listItem);
         });
-    
-    };
-    document.getElementById("newtask").addEventListener('click',function(e){
-     e.preventDefault()
-     addtask();
-    });
-    const blastConfetti = ()=>{
+      };
+      document
+        .getElementById("newtask")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          addtask();
+        });
+      const blastConfetti = () => {
         const end = Date.now() + 1 * 1000;
-    
-    
-    const colors = ["#24feee", "#9932cc"];
-    
-    
-    (function frame() {
-      confetti({
-        particleCount: 2,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors,
-      });
-    
-      confetti({
-        particleCount: 2,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors,
-      });
-    
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    })();
-        
-    };</script>
-     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-</body>
+
+        const colors = ["#24feee", "#9932cc"];
+
+        (function frame() {
+          confetti({
+            particleCount: 2,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: colors,
+          });
+
+          confetti({
+            particleCount: 2,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: colors,
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+    <footer>
+      <p>&copy; 2025 <strong>To-Do List</strong>. All rights reserved.</p>
+      <p>
+        Built with ❤️ by
+        <a
+          href="https://trivickram.vercel.app"
+          target="_blank"
+          rel="noopener"
+          style="color: #00f0ff; text-decoration: none"
+          >Trivikram</a
+        >
+      </p>
+    </footer>
+  </body>
 </html>
