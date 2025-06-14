@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meta Tag Generator</title>
+    <!-- Primary Meta Tags -->
+<title>Meta Tag Generator</title>
+<meta name="title" content="Meta Tag Generator">
+<meta name="description" content="Generate meta tags for your website easily">
+<meta name="author" content="Trivikram">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="devnestle.vercel.app">
+<meta property="og:title" content="Meta Tag Generator">
+<meta property="og:description" content="Generate meta tags for your website easily">
+<meta property="og:image" content="">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="devnestle.vercel.app">
+<meta property="twitter:title" content="Meta Tag Generator">
+<meta property="twitter:description" content="Generate meta tags for your website easily">
+<meta property="twitter:image" content="">
+    <link rel="icon" href="favicon.ico" />
+    <style>
+      :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --text: #c9d1d9;
+        --accent: #58a6ff;
+        --border: #30363d;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: radial-gradient(
+          circle at top left,
+          #59016f,
+          transparent 90%
+        );
+        margin-bottom: 30px;
+        
+      }
+      header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(90deg, #00f0ff, #ff7bdc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 2rem;
+      }
+
+      label {
+        display: block;
+        margin: 1rem 0 0.4rem;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.6rem;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background-color: var(--card);
+        color: var(--text);
+        font-size: 1rem;
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 1.5rem;
+        background-color: var(--accent);
+        border: none;   
+        color: black;
+        text-align: center;
+        display: inline-block;
+        font-weight: 400;
+        text-decoration: none;
+
+        cursor: pointer;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        background-color: var(--accent);
+        color: black;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background-color: #1f6feb;
+      }
+
+      pre {
+        background-color: transparent;
+        padding: 1rem;
+        border: 1px solid var(--border);
+        margin-top: 2rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        border-radius: 8px;
+        font-size: 0.95rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.85rem;
+        color: #777;
+        margin-top: auto;
+        border-top: 2px solid var(--border);
+        margin-bottom: 10px ;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>Meta Tag Generator</h1>
+    <p style="color: #e66c09; font-weight: 300;">Generate meta tags for your website easily!</p>
+    </header>
+    <div class="container">
+      <label for="title">Page Title</label>
+      <input type="text" id="title" placeholder="Enter website title" />
+
+      <label for="description">Page Description</label>
+      <textarea
+        id="description"
+        rows="3"
+        placeholder="Enter page description"
+      ></textarea>
+
+      <label for="url">Page URL</label>
+      <input type="text" id="url" placeholder="https://example.com" />
+
+      <label for="image">Image URL (for social previews)</label>
+      <input
+        type="text"
+        id="image"
+        placeholder="https://example.com/preview.png"
+      />
+
+      <label for="author">Author</label>
+      <input type="text" id="author" placeholder="Your Name" />
+
+      <button onclick="generateMetaTags()">Generate Meta Tags</button>
+
+      <pre id="output"></pre>
+    </div>
+
+    <footer>
+      &copy; 2025 Meta Tag Generator | Built by
+      <a
+        href="https://trivickram.vercel.app"
+        target="_blank"
+        style="color: var(--accent); text-decoration: none"
+        >Trivikram</a
+      >
+    </footer>
+
+    <script>
+      function generateMetaTags() {
+        const title = document.getElementById("title").value.trim();
+        const desc = document.getElementById("description").value.trim();
+        const url = document.getElementById("url").value.trim();
+        const img = document.getElementById("image").value.trim();
+        const author = document.getElementById("author").value.trim();
+
+        const tags = `
+<!-- Primary Meta Tags -->
+<title>${title}</title>
+<meta name="title" content="${title}">
+<meta name="description" content="${desc}">
+<meta name="author" content="${author}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url}">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+<meta property="og:image" content="${img}">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="${url}">
+<meta property="twitter:title" content="${title}">
+<meta property="twitter:description" content="${desc}">
+<meta property="twitter:image" content="${img}">
+`.trim();
+
+        document.getElementById("output").textContent = tags;
+      }
+    </script>
+  </body>
+</html>
