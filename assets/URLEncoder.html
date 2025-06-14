@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL Encoder / Decoder</title>
+  <meta name="description" content="Encode or decode URLs effortlessly with this simple and sleek URL Encoder/Decoder tool. Built for developers, students, and tech enthusiasts.">
+  <meta name="keywords" content="url encoder, url decoder, encode url, decode url, web tools, developer tools">
+  <meta name="author" content="Baratam Trivickram">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="URL Encoder / Decoder | DevTools">
+  <meta property="og:description" content="Clean and fast tool to encode or decode URLs. Built for developers, free and open.">
+  <meta property="og:url" content="https://devnestle.vercel.app/tools/url-encoder-decoder.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="URL Encoder / Decoder | DevTools">
+  <meta name="twitter:description" content="Encode or decode your URLs easily in one click. Free, sleek, and developer-friendly.">
+  <meta name="theme-color" content="#0d1117">
+  <style>
+    :root {
+      --bg: #121212;
+      --text: #e0e0e0;
+      --card: #1e1e1e;
+      --border: #333;
+      --accent: #b46423;
+      --name: #00f0ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0rem 0rem;
+    }
+
+    header {
+    text-align: center;
+    padding: 2rem 1rem;
+    width: 100%;
+    margin-top: -20px;
+    background: radial-gradient(
+      circle at top left,
+      #12423e,
+      transparent 90%
+    );
+    margin-bottom: 30px;
+  }
+    h1 {
+      color: #7758ff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 160px;
+      background-color: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background-color: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--accent);
+      color: #000;
+    }
+
+    .output {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      max-width: 800px;
+      border-radius: 6px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: auto;
+      color: #888;
+      padding: 2rem;
+        width: 100%;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>URL Encoder / Decoder</h1>
+    <p>Encode or decode any URL string with ease</p>
+  </header>
+
+  <textarea id="inputText" placeholder="Enter text or encoded URL..."></textarea>
+
+  <div class="buttons">
+    <button onclick="encode()">Encode</button>
+    <button onclick="decode()">Decode</button>
+    <button onclick="copyResult()">Copy</button>
+  </div>
+
+  <div class="output" id="result">Your result will appear here...</div>
+
+  <footer>
+    &copy; 2025 <strong>DevToolsHub</strong>. Built by 
+    <a href="https://trivickram.vercel.app" target="_blank" style="color: var(--name); font-weight:600;">Trivikram</a>
+  </footer>
+
+  <script>
+    const input = document.getElementById("inputText");
+    const result = document.getElementById("result");
+
+    function encode() {
+      result.textContent = encodeURIComponent(input.value);
+    }
+
+    function decode() {
+      try {
+        result.textContent = decodeURIComponent(input.value);
+      } catch (e) {
+        result.textContent = "⚠️ Invalid encoded string.";
+      }
+    }
+
+    function copyResult() {
+      navigator.clipboard.writeText(result.textContent)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(() => alert("Copy failed."));
+    }
+  </script>
+</body>
+</html>
