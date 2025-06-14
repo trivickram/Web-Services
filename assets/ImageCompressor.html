@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Compressor (WebP)</title>
+    <style>
+      :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --text: #c9d1d9;
+        --accent: #58a6ff;
+        --border: #30363d;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0rem;
+        margin: 0;
+      }
+
+      h1 {
+        color: var(--accent);
+        margin-bottom: 1rem;
+      }
+      header {
+        text-align: center;
+        padding: 1rem 1rem;
+        background: radial-gradient(
+          circle at top left,
+          #0b426e,
+          transparent 90%
+        );
+        width: 100%;
+        margin: 0;
+        margin-bottom: 60px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+        background: linear-gradient(90deg, #f2ff00, #ff7b7b);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
+      }
+      .container {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        /* padding: 2rem; */
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        padding: 30px 30px;
+        margin-bottom: 7.5rem;
+      }
+
+      input[type="file"] {
+        margin: 1rem 0;
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 0.6rem;
+        width: 100%;
+      }
+
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+
+      input[type="range"] {
+        width: 100%;
+      }
+
+      button {
+        margin-top: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        background-color: var(--accent);
+        color: black;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      img {
+        margin-top: 1rem;
+        max-width: 100%;
+        border-radius: 6px;
+      }
+
+      .info {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #aaa;
+      }
+
+      footer {
+        background-color: #111;
+        color: #aaa;
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.95rem;
+        margin-top: auto;
+        border-top: 1px solid #222;
+        width: 100%;
+        margin-bottom: -3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>🗜️ Image Compressor (WebP)</h1>
+      <p>Compress images to WebP format with adjustable quality.</p>
+    </header>
+    <div class="container">
+      <input type="file" id="imageInput" accept="image/*" />
+
+      <label for="quality"
+        >Compression Quality: <span id="qualityValue">60</span>%</label
+      >
+      <input type="range" id="quality" min="10" max="100" value="60" />
+
+      <button onclick="compressImage()">Compress & Download (WebP)</button>
+
+      <div id="previewContainer">
+        <img id="preview" src="" alt="" style="display: none" />
+        <div class="info" id="sizeInfo"></div>
+      </div>
+    </div>
+
+    
+
+    <script>
+      const imageInput = document.getElementById("imageInput");
+      const qualitySlider = document.getElementById("quality");
+      const qualityValue = document.getElementById("qualityValue");
+      const preview = document.getElementById("preview");
+      const sizeInfo = document.getElementById("sizeInfo");
+
+      let originalFile;
+
+      qualitySlider.oninput = () => {
+        qualityValue.textContent = qualitySlider.value;
+      };
+
+      imageInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+          originalFile = file;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            preview.src = event.target.result;
+            preview.style.display = "block";
+            sizeInfo.textContent = `Original Size: ${(file.size / 1024).toFixed(
+              2
+            )} KB`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      function compressImage() {
+        if (!originalFile) return alert("Please upload an image first.");
+
+        const quality = parseInt(qualitySlider.value) / 100;
+        const img = new Image();
+        img.src = URL.createObjectURL(originalFile);
+
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(
+            (blob) => {
+              const compressedSize = (blob.size / 1024).toFixed(2);
+              const originalSize = (originalFile.size / 1024).toFixed(2);
+
+              if (blob.size > originalFile.size) {
+                sizeInfo.textContent += ` → Compressed Size: ${compressedSize} KB ⚠️ Larger than original`;
+              } else {
+                sizeInfo.textContent += ` → Compressed Size: ${compressedSize} KB ✅`;
+              }
+
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              const baseName =
+                originalFile.name.split(".").slice(0, -1).join(".") ||
+                "compressed-image";
+              link.download = baseName + ".webp";
+              link.click();
+            },
+            "image/webp",
+            quality
+          );
+        };
+      }
+    </script>
+  </body>
+  <footer>
+      <p>&copy; 2025 <strong>DevToolsHub</strong>. Image Compressor</p>
+      <p>
+        Built with ❤️ by
+        <a
+          href="https://trivickram.vercel.app"
+          target="_blank"
+          rel="noopener"
+          style="color: #00f0ff; text-decoration: underline"
+          >Trivikram</a
+        >
+      </p>
+    </footer>
+</html>
