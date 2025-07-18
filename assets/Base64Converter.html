@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoder/Decoder - Convert Text & Files | DevTools</title>
+  <meta name="description" content="Encode and decode Base64 text and files instantly. Perfect for developers working with data encoding, APIs, and file handling.">
+  <meta name="keywords" content="base64 encoder, base64 decoder, text encoder, file encoder, developer tools, data encoding, API tools">
+  <meta name="author" content="Baratam Trivickram">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Base64 Encoder/Decoder - Convert Text & Files | DevTools">
+  <meta property="og:description" content="Powerful Base64 encoding and decoding tool for text and files. Essential for developers working with data encoding.">
+  <meta property="og:url" content="https://devnestle.vercel.app/assets/Base64Converter.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Base64 Encoder/Decoder - Convert Text & Files | DevTools">
+  <meta name="twitter:description" content="Convert text and files to Base64 and back with this clean, fast tool designed for developers.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --border: #30363d;
+      --success: #238636;
+      --warning: #f85149;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: radial-gradient(circle at top left, #1f2937, transparent 90%);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00f0ff, #7bffce);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    header p {
+      color: #8b949e;
+      font-size: 1.1rem;
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem;
+      flex: 1;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      padding: 0.8rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(88, 166, 255, 0.1);
+    }
+
+    .tab:hover {
+      background: rgba(88, 166, 255, 0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      resize: vertical;
+      font-family: 'Courier New', monospace;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+    }
+
+    .file-input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--card);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-input:hover {
+      border-color: var(--accent);
+      background: rgba(88, 166, 255, 0.05);
+    }
+
+    .file-input input {
+      display: none;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .clear-btn {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .copy-btn {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .output-group {
+      margin-top: 2rem;
+    }
+
+    .file-info {
+      background: rgba(88, 166, 255, 0.1);
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .file-info h4 {
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+
+    .download-link {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--success);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .download-link:hover {
+      background: #2ea043;
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+      color: #8b949e;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem 1rem;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 Base64 Encoder/Decoder</h1>
+    <p>Convert text and files to Base64 and back with ease</p>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('text')">Text Converter</button>
+      <button class="tab" onclick="switchTab('file')">File Converter</button>
+    </div>
+
+    <!-- Text Tab -->
+    <div id="text-tab" class="tab-content active">
+      <div class="input-group">
+        <label for="textInput">Input Text:</label>
+        <textarea id="textInput" placeholder="Enter text to encode/decode..."></textarea>
+      </div>
+      
+      <div class="buttons">
+        <button onclick="encodeText()">Encode to Base64</button>
+        <button onclick="decodeText()">Decode from Base64</button>
+        <button class="copy-btn" onclick="copyResult('textOutput')">Copy Result</button>
+        <button class="clear-btn" onclick="clearText()">Clear All</button>
+      </div>
+
+      <div class="output-group">
+        <label for="textOutput">Result:</label>
+        <textarea id="textOutput" placeholder="Result will appear here..." readonly></textarea>
+      </div>
+    </div>
+
+    <!-- File Tab -->
+    <div id="file-tab" class="tab-content">
+      <div class="input-group">
+        <label>Select File to Encode:</label>
+        <div class="file-input" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" onchange="handleFileSelect(event)">
+          <p>Click to select a file or drag and drop</p>
+        </div>
+      </div>
+
+      <div id="fileInfo" class="file-info" style="display: none;">
+        <h4>File Information:</h4>
+        <p id="fileName"></p>
+        <p id="fileSize"></p>
+        <p id="fileType"></p>
+      </div>
+
+      <div class="buttons">
+        <button onclick="encodeFile()" id="encodeFileBtn" disabled>Encode File</button>
+        <button class="copy-btn" onclick="copyResult('fileOutput')" id="copyFileBtn" disabled>Copy Base64</button>
+        <button class="clear-btn" onclick="clearFile()">Clear</button>
+      </div>
+
+      <div class="output-group">
+        <label>Base64 to Decode (paste here):</label>
+        <textarea id="base64Input" placeholder="Paste Base64 encoded file data here to decode..."></textarea>
+        <div class="buttons">
+          <button onclick="decodeFile()">Decode & Download</button>
+        </div>
+      </div>
+
+      <div class="output-group">
+        <label for="fileOutput">Encoded Result:</label>
+        <textarea id="fileOutput" placeholder="Base64 encoded file will appear here..." readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 DevToolsHub • Base64 Converter by 
+    <a href="https://trivickram.vercel.app" target="_blank" rel="noopener">Trivikram</a>
+  </footer>
+
+  <script>
+    let currentFile = null;
+
+    function switchTab(tab) {
+      // Remove active class from all tabs and contents
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      // Add active class to selected tab and content
+      event.target.classList.add('active');
+      document.getElementById(tab + '-tab').classList.add('active');
+    }
+
+    function encodeText() {
+      const input = document.getElementById('textInput').value;
+      if (!input.trim()) {
+        alert('Please enter some text to encode');
+        return;
+      }
+      
+      try {
+        const encoded = btoa(unescape(encodeURIComponent(input)));
+        document.getElementById('textOutput').value = encoded;
+      } catch (error) {
+        alert('Error encoding text: ' + error.message);
+      }
+    }
+
+    function decodeText() {
+      const input = document.getElementById('textInput').value;
+      if (!input.trim()) {
+        alert('Please enter Base64 text to decode');
+        return;
+      }
+      
+      try {
+        const decoded = decodeURIComponent(escape(atob(input)));
+        document.getElementById('textOutput').value = decoded;
+      } catch (error) {
+        alert('Invalid Base64 input');
+      }
+    }
+
+    function copyResult(outputId) {
+      const output = document.getElementById(outputId);
+      if (!output.value.trim()) {
+        alert('Nothing to copy');
+        return;
+      }
+      
+      output.select();
+      document.execCommand('copy');
+      alert('Copied to clipboard!');
+    }
+
+    function clearText() {
+      document.getElementById('textInput').value = '';
+      document.getElementById('textOutput').value = '';
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      currentFile = file;
+      
+      // Show file info
+      document.getElementById('fileName').textContent = `Name: ${file.name}`;
+      document.getElementById('fileSize').textContent = `Size: ${(file.size / 1024).toFixed(2)} KB`;
+      document.getElementById('fileType').textContent = `Type: ${file.type || 'Unknown'}`;
+      document.getElementById('fileInfo').style.display = 'block';
+      
+      // Enable encode button
+      document.getElementById('encodeFileBtn').disabled = false;
+    }
+
+    function encodeFile() {
+      if (!currentFile) {
+        alert('Please select a file first');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = e.target.result.split(',')[1]; // Remove data URL prefix
+        document.getElementById('fileOutput').value = base64;
+        document.getElementById('copyFileBtn').disabled = false;
+      };
+      reader.readAsDataURL(currentFile);
+    }
+
+    function decodeFile() {
+      const base64Input = document.getElementById('base64Input').value.trim();
+      if (!base64Input) {
+        alert('Please paste Base64 data to decode');
+        return;
+      }
+      
+      try {
+        // Convert base64 to blob
+        const byteCharacters = atob(base64Input);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray]);
+        
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'decoded_file';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        alert('File decoded and download started!');
+      } catch (error) {
+        alert('Error decoding file: Invalid Base64 data');
+      }
+    }
+
+    function clearFile() {
+      document.getElementById('fileInput').value = '';
+      document.getElementById('fileOutput').value = '';
+      document.getElementById('base64Input').value = '';
+      document.getElementById('fileInfo').style.display = 'none';
+      document.getElementById('encodeFileBtn').disabled = true;
+      document.getElementById('copyFileBtn').disabled = true;
+      currentFile = null;
+    }
+
+    // Drag and drop functionality
+    const fileInput = document.querySelector('.file-input');
+    
+    fileInput.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileInput.style.borderColor = 'var(--accent)';
+      fileInput.style.background = 'rgba(88, 166, 255, 0.1)';
+    });
+    
+    fileInput.addEventListener('dragleave', () => {
+      fileInput.style.borderColor = 'var(--border)';
+      fileInput.style.background = 'var(--card)';
+    });
+    
+    fileInput.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileInput.style.borderColor = 'var(--border)';
+      fileInput.style.background = 'var(--card)';
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        document.getElementById('fileInput').files = files;
+        handleFileSelect({ target: { files: files } });
+      }
+    });
+  </script>
+</body>
+</html>

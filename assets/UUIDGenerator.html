@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator - Generate Unique Identifiers | DevTools</title>
+  <meta name="description" content="Generate UUID v1, v4, and other unique identifiers for databases, APIs, and applications. Bulk generation with copy and download features.">
+  <meta name="keywords" content="UUID generator, GUID generator, unique identifier, UUID v1, UUID v4, database ID, API development, developer tools">
+  <meta name="author" content="Baratam Trivickram">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="UUID Generator - Generate Unique Identifiers | DevTools">
+  <meta property="og:description" content="Professional UUID generation tool supporting multiple versions and bulk generation for developers and database administrators.">
+  <meta property="og:url" content="https://devnestle.vercel.app/assets/UUIDGenerator.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UUID Generator - Generate Unique Identifiers | DevTools">
+  <meta name="twitter:description" content="Generate UUIDs instantly with support for multiple versions and bulk generation features.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --text: #c9d1d9;
+      --accent: #3b82f6;
+      --border: #30363d;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --muted: #8b949e;
+      --secondary: #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: radial-gradient(circle at top left, #1e3a8a, transparent 90%);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #3b82f6, #6366f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem;
+      flex: 1;
+    }
+
+    .generator-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .generator-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .option-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+
+    .option-group h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      accent-color: var(--accent);
+    }
+
+    .radio-option label {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .version-info {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      margin-left: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .input-group input[type="number"] {
+      width: 100%;
+      padding: 0.6rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .input-group input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .format-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    .checkbox-option label {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .primary-btn:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .secondary-btn {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .secondary-btn:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+    }
+
+    .success-btn {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .success-btn:hover {
+      background: #16a34a;
+    }
+
+    .danger-btn {
+      background: var(--error);
+      color: #fff;
+    }
+
+    .danger-btn:hover {
+      background: #dc2626;
+    }
+
+    .results-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .results-header {
+      background: rgba(59, 130, 246, 0.1);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .results-title {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .results-count {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .results-content {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .uuid-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .uuid-item:hover {
+      border-color: var(--accent);
+    }
+
+    .uuid-value {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      flex: 1;
+      margin-right: 1rem;
+      word-break: break-all;
+    }
+
+    .copy-uuid-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .copy-uuid-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .info-panel {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-panel h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-item {
+      background: rgba(59, 130, 246, 0.05);
+      border-radius: 4px;
+      padding: 0.8rem;
+    }
+
+    .info-item h4 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .info-item p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .generator-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      .uuid-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .copy-uuid-btn {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🆔 UUID Generator</h1>
+    <p>Generate unique identifiers for your applications and databases</p>
+  </header>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="totalGenerated">0</div>
+        <div class="stat-label">Total Generated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="currentSession">0</div>
+        <div class="stat-label">Current Session</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="currentVersion">v4</div>
+        <div class="stat-label">Current Version</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="currentFormat">Hyphenated</div>
+        <div class="stat-label">Format</div>
+      </div>
+    </div>
+
+    <div class="generator-section">
+      <div class="generator-options">
+        <div class="option-group">
+          <h3>UUID Version</h3>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="uuid-v1" name="uuidVersion" value="1">
+              <label for="uuid-v1">UUID v1</label>
+            </div>
+            <div class="version-info">Time-based with MAC address</div>
+            
+            <div class="radio-option">
+              <input type="radio" id="uuid-v4" name="uuidVersion" value="4" checked>
+              <label for="uuid-v4">UUID v4</label>
+            </div>
+            <div class="version-info">Random/pseudo-random (recommended)</div>
+            
+            <div class="radio-option">
+              <input type="radio" id="uuid-nil" name="uuidVersion" value="nil">
+              <label for="uuid-nil">Nil UUID</label>
+            </div>
+            <div class="version-info">All zeros (00000000-0000-0000-0000-000000000000)</div>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <h3>Generation Options</h3>
+          <div class="input-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" max="1000" value="1">
+          </div>
+        </div>
+
+        <div class="option-group">
+          <h3>Format Options</h3>
+          <div class="format-options">
+            <div class="checkbox-option">
+              <input type="checkbox" id="uppercase">
+              <label for="uppercase">Uppercase</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="noHyphens">
+              <label for="noHyphens">No hyphens</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="braces">
+              <label for="braces">Add braces {}</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="quotes">
+              <label for="quotes">Add quotes ""</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary-btn" onclick="generateUUIDs()">Generate UUIDs</button>
+      <button class="secondary-btn" onclick="generateSingle()">Generate One</button>
+      <button class="success-btn" onclick="copyAllUUIDs()">Copy All</button>
+      <button class="success-btn" onclick="downloadUUIDs()">Download</button>
+      <button class="danger-btn" onclick="clearResults()">Clear</button>
+    </div>
+
+    <div id="resultsSection" class="results-section" style="display: none;">
+      <div class="results-header">
+        <span class="results-title">Generated UUIDs</span>
+        <span class="results-count" id="resultsCount">0 UUIDs</span>
+      </div>
+      <div class="results-content" id="resultsContent"></div>
+    </div>
+
+    <div class="info-panel">
+      <h3>📚 UUID Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <h4>UUID v1 (Time-based)</h4>
+          <p>Generated based on timestamp and MAC address. Provides uniqueness across space and time but may reveal information about when and where it was generated.</p>
+        </div>
+        <div class="info-item">
+          <h4>UUID v4 (Random)</h4>
+          <p>Generated using random or pseudo-random numbers. Provides excellent uniqueness without revealing any information about the generator. Recommended for most use cases.</p>
+        </div>
+        <div class="info-item">
+          <h4>Nil UUID</h4>
+          <p>Special UUID where all bits are set to zero. Used as a placeholder or to indicate the absence of a UUID value in applications.</p>
+        </div>
+        <div class="info-item">
+          <h4>Use Cases</h4>
+          <p>Database primary keys, distributed system identifiers, session tokens, file names, API request IDs, and any scenario requiring unique identifiers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 DevToolsHub • UUID Generator by 
+    <a href="https://trivickram.vercel.app" target="_blank" rel="noopener">Trivikram</a>
+  </footer>
+
+  <script>
+    let generatedUUIDs = [];
+    let sessionCount = 0;
+    let totalCount = parseInt(localStorage.getItem('uuidTotalCount') || '0');
+
+    // Update stats on load
+    updateStats();
+
+    function generateUUID4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0;
+        var v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function generateUUID1() {
+      // Simplified UUID v1 implementation
+      const timestamp = Date.now();
+      const clockSeq = Math.floor(Math.random() * 0x4000);
+      const node = Array.from({length: 6}, () => Math.floor(Math.random() * 256));
+      
+      const timeHex = timestamp.toString(16).padStart(12, '0');
+      const timeLow = timeHex.slice(-8);
+      const timeMid = timeHex.slice(-12, -8);
+      const timeHigh = '1' + timeHex.slice(-15, -12);
+      
+      const clockSeqHex = clockSeq.toString(16).padStart(4, '0');
+      const nodeHex = node.map(n => n.toString(16).padStart(2, '0')).join('');
+      
+      return `${timeLow}-${timeMid}-${timeHigh}-${clockSeqHex}-${nodeHex}`;
+    }
+
+    function generateNilUUID() {
+      return '00000000-0000-0000-0000-000000000000';
+    }
+
+    function formatUUID(uuid) {
+      const uppercase = document.getElementById('uppercase').checked;
+      const noHyphens = document.getElementById('noHyphens').checked;
+      const braces = document.getElementById('braces').checked;
+      const quotes = document.getElementById('quotes').checked;
+
+      let formatted = uuid;
+
+      if (uppercase) {
+        formatted = formatted.toUpperCase();
+      }
+
+      if (noHyphens) {
+        formatted = formatted.replace(/-/g, '');
+      }
+
+      if (braces) {
+        formatted = `{${formatted}}`;
+      }
+
+      if (quotes) {
+        formatted = `"${formatted}"`;
+      }
+
+      return formatted;
+    }
+
+    function generateUUIDs() {
+      const version = document.querySelector('input[name="uuidVersion"]:checked').value;
+      const quantity = parseInt(document.getElementById('quantity').value);
+
+      if (quantity < 1 || quantity > 1000) {
+        alert('Please enter a quantity between 1 and 1000');
+        return;
+      }
+
+      generatedUUIDs = [];
+
+      for (let i = 0; i < quantity; i++) {
+        let uuid;
+        switch (version) {
+          case '1':
+            uuid = generateUUID1();
+            break;
+          case '4':
+            uuid = generateUUID4();
+            break;
+          case 'nil':
+            uuid = generateNilUUID();
+            break;
+          default:
+            uuid = generateUUID4();
+        }
+
+        generatedUUIDs.push(formatUUID(uuid));
+      }
+
+      sessionCount += quantity;
+      totalCount += quantity;
+      localStorage.setItem('uuidTotalCount', totalCount.toString());
+
+      displayResults();
+      updateStats();
+    }
+
+    function generateSingle() {
+      document.getElementById('quantity').value = '1';
+      generateUUIDs();
+    }
+
+    function displayResults() {
+      const resultsSection = document.getElementById('resultsSection');
+      const resultsContent = document.getElementById('resultsContent');
+      const resultsCount = document.getElementById('resultsCount');
+
+      resultsContent.innerHTML = '';
+
+      generatedUUIDs.forEach((uuid, index) => {
+        const uuidItem = document.createElement('div');
+        uuidItem.className = 'uuid-item';
+        
+        uuidItem.innerHTML = `
+          <div class="uuid-value">${uuid}</div>
+          <button class="copy-uuid-btn" onclick="copyUUID('${uuid}')">Copy</button>
+        `;
+        
+        resultsContent.appendChild(uuidItem);
+      });
+
+      resultsCount.textContent = `${generatedUUIDs.length} UUID${generatedUUIDs.length !== 1 ? 's' : ''}`;
+      resultsSection.style.display = 'block';
+    }
+
+    function copyUUID(uuid) {
+      navigator.clipboard.writeText(uuid).then(() => {
+        // Visual feedback could be added here
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = 'var(--success)';
+        button.style.color = '#fff';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = 'transparent';
+          button.style.color = 'var(--accent)';
+        }, 1000);
+      }).catch(() => {
+        alert('Failed to copy UUID');
+      });
+    }
+
+    function copyAllUUIDs() {
+      if (generatedUUIDs.length === 0) {
+        alert('No UUIDs to copy');
+        return;
+      }
+
+      const allUUIDs = generatedUUIDs.join('\n');
+      navigator.clipboard.writeText(allUUIDs).then(() => {
+        alert(`${generatedUUIDs.length} UUIDs copied to clipboard!`);
+      }).catch(() => {
+        alert('Failed to copy UUIDs');
+      });
+    }
+
+    function downloadUUIDs() {
+      if (generatedUUIDs.length === 0) {
+        alert('No UUIDs to download');
+        return;
+      }
+
+      const content = generatedUUIDs.join('\n');
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `uuids_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function clearResults() {
+      generatedUUIDs = [];
+      document.getElementById('resultsSection').style.display = 'none';
+      sessionCount = 0;
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('totalGenerated').textContent = totalCount.toLocaleString();
+      document.getElementById('currentSession').textContent = sessionCount.toLocaleString();
+      
+      const version = document.querySelector('input[name="uuidVersion"]:checked').value;
+      document.getElementById('currentVersion').textContent = version === 'nil' ? 'Nil' : `v${version}`;
+      
+      const noHyphens = document.getElementById('noHyphens').checked;
+      const braces = document.getElementById('braces').checked;
+      const quotes = document.getElementById('quotes').checked;
+      const uppercase = document.getElementById('uppercase').checked;
+      
+      let format = 'Hyphenated';
+      if (noHyphens) format = 'No hyphens';
+      if (braces) format += ' + Braces';
+      if (quotes) format += ' + Quotes';
+      if (uppercase) format += ' + Uppercase';
+      
+      document.getElementById('currentFormat').textContent = format;
+    }
+
+    // Update stats when options change
+    document.querySelectorAll('input[name="uuidVersion"], input[type="checkbox"]').forEach(input => {
+      input.addEventListener('change', updateStats);
+    });
+
+    // Generate a sample UUID on page load
+    generateSingle();
+  </script>
+</body>
+</html>

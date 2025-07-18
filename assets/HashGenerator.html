@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Generator - MD5, SHA1, SHA256 | DevTools</title>
+  <meta name="description" content="Generate MD5, SHA1, SHA256, and other hash values for text and files. Essential tool for developers, security professionals, and file verification.">
+  <meta name="keywords" content="hash generator, MD5, SHA1, SHA256, checksum, file hash, text hash, security tools, developer tools, file verification">
+  <meta name="author" content="Baratam Trivickram">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Hash Generator - MD5, SHA1, SHA256 | DevTools">
+  <meta property="og:description" content="Generate secure hash values for text and files with support for multiple algorithms including MD5, SHA1, SHA256, and more.">
+  <meta property="og:url" content="https://devnestle.vercel.app/assets/HashGenerator.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hash Generator - MD5, SHA1, SHA256 | DevTools">
+  <meta name="twitter:description" content="Professional hash generation tool supporting multiple algorithms for text and file hashing.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --text: #c9d1d9;
+      --accent: #10b981;
+      --border: #30363d;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --muted: #8b949e;
+      --secondary: #6b7280;
+      --glass: rgba(22, 27, 34, 0.8);
+      --glow: 0 0 20px rgba(16, 185, 129, 0.3);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    header h1 {
+      font-size: 3rem;
+      background: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+      animation: glow 3s ease-in-out infinite alternate;
+      text-shadow: var(--glow);
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)); }
+      to { filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8)); }
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem;
+      flex: 1;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .tab {
+      padding: 0.8rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .tab:hover {
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .input-section {
+      background: var(--glass);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .input-section:hover::before {
+      left: 100%;
+    }
+
+    .input-section:hover {
+      border-color: var(--accent);
+      box-shadow: var(--glow), var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 1.2rem;
+      background: rgba(13, 17, 23, 0.8);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+      resize: vertical;
+      font-family: 'Courier New', monospace;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.2),
+        0 0 0 3px rgba(16, 185, 129, 0.2),
+        var(--glow);
+      transform: scale(1.01);
+    }
+
+    textarea:hover {
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+
+    .file-upload {
+      width: 100%;
+      padding: 3rem;
+      background: linear-gradient(135deg, rgba(13, 17, 23, 0.8), rgba(22, 27, 34, 0.6));
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-upload::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+      transition: all 0.6s ease;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .file-upload:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .file-upload:hover {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(22, 27, 34, 0.8));
+      transform: translateY(-4px);
+      box-shadow: var(--glow), var(--shadow);
+    }
+
+    .file-upload.drag-over {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(22, 27, 34, 0.9));
+      transform: scale(1.02);
+    }
+
+    .file-upload input {
+      display: none;
+    }
+
+    .file-upload-text {
+      color: var(--muted);
+      margin-top: 0.5rem;
+      position: relative;
+      z-index: 1;
+      font-size: 1.1rem;
+    }
+
+    .file-upload-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    .file-info {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: var(--shadow);
+      animation: slideInDown 0.5s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #34d399);
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .file-info h4 {
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+
+    .algorithms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .algorithm-option {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: var(--glass);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .algorithm-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .algorithm-option:hover::before {
+      left: 100%;
+    }
+
+    .algorithm-option:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--glow), var(--shadow);
+    }
+
+    .algorithm-option.checked {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), var(--glass));
+      box-shadow: var(--glow);
+    }
+
+    .algorithm-option input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    .algorithm-option label {
+      margin: 0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1rem;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--accent), #059669);
+      color: #000;
+      box-shadow: var(--shadow);
+    }
+
+    .primary-btn:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-3px);
+      box-shadow: var(--glow), 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .primary-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      box-shadow: inset 0 0 0 0 var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .secondary-btn:hover {
+      background: var(--accent);
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: var(--glow), var(--shadow);
+    }
+
+    .danger-btn {
+      background: var(--error);
+      color: #fff;
+    }
+
+    .danger-btn:hover {
+      background: #dc2626;
+    }
+
+    .results {
+      background: var(--glass);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .results-header {
+      background: rgba(16, 185, 129, 0.1);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hash-result {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .hash-result:last-child {
+      border-bottom: none;
+    }
+
+    .hash-result:hover {
+      background: rgba(16, 185, 129, 0.05);
+      transform: translateX(5px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hash-algorithm {
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 80px;
+    }
+
+    .hash-value {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      flex: 1;
+      margin: 0 1rem;
+      word-break: break-all;
+    }
+
+    .copy-hash-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copy-hash-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .copy-hash-btn:hover::before {
+      left: 0;
+    }
+
+    .copy-hash-btn:hover {
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .copy-hash-btn.copied {
+      background: var(--success);
+      color: #000;
+      border-color: var(--success);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    .spinner {
+      border: 4px solid var(--border);
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+      box-shadow: var(--glow);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #34d399);
+      border-radius: 2px;
+      animation: progress 2s ease-in-out infinite;
+    }
+
+    @keyframes progress {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .algorithms {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      .hash-result {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 Hash Generator</h1>
+    <p>Generate secure hash values for text and files</p>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('text')">Text Hash</button>
+      <button class="tab" onclick="switchTab('file')">File Hash</button>
+    </div>
+
+    <!-- Text Tab -->
+    <div id="text-tab" class="tab-content active">
+      <div class="input-section">
+        <div class="input-group">
+          <label for="textInput">Enter Text to Hash:</label>
+          <textarea id="textInput" placeholder="Enter your text here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Tab -->
+    <div id="file-tab" class="tab-content">
+      <div class="input-section">
+        <div class="input-group">
+          <label>Select File to Hash:</label>
+          <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" onchange="handleFileSelect(event)">
+            <div class="file-upload-icon">📁</div>
+            <div>Click to select a file</div>
+            <div class="file-upload-text">Or drag and drop your file here</div>
+          </div>
+        </div>
+
+        <div id="fileInfo" class="file-info" style="display: none;">
+          <h4>File Information:</h4>
+          <p id="fileName"></p>
+          <p id="fileSize"></p>
+          <p id="fileType"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Algorithm Selection -->
+    <div class="algorithms">
+      <div class="algorithm-option">
+        <input type="checkbox" id="md5" checked>
+        <label for="md5">MD5</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="checkbox" id="sha1" checked>
+        <label for="sha1">SHA-1</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="checkbox" id="sha256" checked>
+        <label for="sha256">SHA-256</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="checkbox" id="sha384">
+        <label for="sha384">SHA-384</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="checkbox" id="sha512">
+        <label for="sha512">SHA-512</label>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="primary-btn" onclick="generateHashes()">Generate Hashes</button>
+      <button class="secondary-btn" onclick="copyAllHashes()">Copy All</button>
+      <button class="danger-btn" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="results" style="display: none;">
+      <div class="results-header">Hash Results</div>
+      <div id="hashResults"></div>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+      <div class="spinner"></div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <p>Generating hashes...</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 DevToolsHub • Hash Generator by 
+    <a href="https://trivickram.vercel.app" target="_blank" rel="noopener">Trivikram</a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+    let currentFile = null;
+    let currentHashes = {};
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeAlgorithmOptions();
+      addInputAnimations();
+    });
+
+    function initializeAlgorithmOptions() {
+      const checkboxes = document.querySelectorAll('.algorithm-option input[type="checkbox"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          updateAlgorithmOption(this);
+        });
+        updateAlgorithmOption(checkbox);
+      });
+    }
+
+    function updateAlgorithmOption(checkbox) {
+      const option = checkbox.closest('.algorithm-option');
+      if (checkbox.checked) {
+        option.classList.add('checked');
+      } else {
+        option.classList.remove('checked');
+      }
+    }
+
+    function addInputAnimations() {
+      const textInput = document.getElementById('textInput');
+      textInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+          this.style.borderColor = 'var(--accent)';
+        } else {
+          this.style.borderColor = 'var(--border)';
+        }
+      });
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tab + '-tab').classList.add('active');
+      
+      // Add transition effect
+      const activeContent = document.getElementById(tab + '-tab');
+      activeContent.style.opacity = '0';
+      activeContent.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        activeContent.style.opacity = '1';
+        activeContent.style.transform = 'translateY(0)';
+      }, 100);
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      currentFile = file;
+      
+      document.getElementById('fileName').textContent = `Name: ${file.name}`;
+      document.getElementById('fileSize').textContent = `Size: ${formatFileSize(file.size)}`;
+      document.getElementById('fileType').textContent = `Type: ${file.type || 'Unknown'}`;
+      document.getElementById('fileInfo').style.display = 'block';
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    async function generateHashes() {
+      const activeTab = document.querySelector('.tab.active').textContent;
+      const algorithms = getSelectedAlgorithms();
+      
+      if (algorithms.length === 0) {
+        alert('Please select at least one hash algorithm');
+        return;
+      }
+
+      let input = null;
+      if (activeTab === 'Text Hash') {
+        input = document.getElementById('textInput').value;
+        if (!input.trim()) {
+          alert('Please enter text to hash');
+          return;
+        }
+      } else {
+        if (!currentFile) {
+          alert('Please select a file to hash');
+          return;
+        }
+        input = await readFileAsArrayBuffer(currentFile);
+      }
+
+      showLoading();
+      
+      try {
+        currentHashes = {};
+        
+        if (activeTab === 'Text Hash') {
+          await generateTextHashes(input, algorithms);
+        } else {
+          await generateFileHashes(input, algorithms);
+        }
+        
+        displayResults();
+      } catch (error) {
+        alert('Error generating hashes: ' + error.message);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    function getSelectedAlgorithms() {
+      const algorithms = [];
+      if (document.getElementById('md5').checked) algorithms.push('md5');
+      if (document.getElementById('sha1').checked) algorithms.push('sha1');
+      if (document.getElementById('sha256').checked) algorithms.push('sha256');
+      if (document.getElementById('sha384').checked) algorithms.push('sha384');
+      if (document.getElementById('sha512').checked) algorithms.push('sha512');
+      return algorithms;
+    }
+
+    async function generateTextHashes(text, algorithms) {
+      for (const algorithm of algorithms) {
+        switch (algorithm) {
+          case 'md5':
+            currentHashes.md5 = CryptoJS.MD5(text).toString();
+            break;
+          case 'sha1':
+            currentHashes.sha1 = CryptoJS.SHA1(text).toString();
+            break;
+          case 'sha256':
+            currentHashes.sha256 = CryptoJS.SHA256(text).toString();
+            break;
+          case 'sha384':
+            currentHashes.sha384 = CryptoJS.SHA384(text).toString();
+            break;
+          case 'sha512':
+            currentHashes.sha512 = CryptoJS.SHA512(text).toString();
+            break;
+        }
+      }
+    }
+
+    async function generateFileHashes(arrayBuffer, algorithms) {
+      const wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
+      
+      for (const algorithm of algorithms) {
+        switch (algorithm) {
+          case 'md5':
+            currentHashes.md5 = CryptoJS.MD5(wordArray).toString();
+            break;
+          case 'sha1':
+            currentHashes.sha1 = CryptoJS.SHA1(wordArray).toString();
+            break;
+          case 'sha256':
+            currentHashes.sha256 = CryptoJS.SHA256(wordArray).toString();
+            break;
+          case 'sha384':
+            currentHashes.sha384 = CryptoJS.SHA384(wordArray).toString();
+            break;
+          case 'sha512':
+            currentHashes.sha512 = CryptoJS.SHA512(wordArray).toString();
+            break;
+        }
+      }
+    }
+
+    function readFileAsArrayBuffer(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function displayResults() {
+      const resultsDiv = document.getElementById('results');
+      const hashResultsDiv = document.getElementById('hashResults');
+      
+      hashResultsDiv.innerHTML = '';
+      
+      Object.entries(currentHashes).forEach(([algorithm, hash]) => {
+        const resultDiv = document.createElement('div');
+        resultDiv.className = 'hash-result';
+        
+        resultDiv.innerHTML = `
+          <div class="hash-algorithm">${algorithm.toUpperCase()}</div>
+          <div class="hash-value">${hash}</div>
+          <button class="copy-hash-btn" onclick="copyHash('${hash}')">Copy</button>
+        `;
+        
+        hashResultsDiv.appendChild(resultDiv);
+      });
+      
+      resultsDiv.style.display = 'block';
+    }
+
+    function copyHash(hash) {
+      navigator.clipboard.writeText(hash).then(() => {
+        showNotification('Hash copied to clipboard!', 'success');
+        
+        // Add visual feedback to button
+        const button = event.target;
+        button.classList.add('copied');
+        button.textContent = 'Copied!';
+        
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.textContent = 'Copy';
+        }, 2000);
+      }).catch(() => {
+        showNotification('Failed to copy hash', 'error');
+      });
+    }
+
+    function showNotification(message, type = 'info') {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 1000;
+        animation: slideInRight 0.3s ease-out;
+        box-shadow: var(--shadow);
+      `;
+      
+      if (type === 'success') {
+        notification.style.background = 'var(--success)';
+      } else if (type === 'error') {
+        notification.style.background = 'var(--error)';
+      } else {
+        notification.style.background = 'var(--accent)';
+      }
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease-out';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    function copyAllHashes() {
+      if (Object.keys(currentHashes).length === 0) {
+        showNotification('No hashes to copy', 'error');
+        return;
+      }
+      
+      const hashText = Object.entries(currentHashes)
+        .map(([algorithm, hash]) => `${algorithm.toUpperCase()}: ${hash}`)
+        .join('\n');
+      
+      navigator.clipboard.writeText(hashText).then(() => {
+        showNotification('All hashes copied to clipboard!', 'success');
+      }).catch(() => {
+        showNotification('Failed to copy hashes', 'error');
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('textInput').value = '';
+      document.getElementById('fileInput').value = '';
+      document.getElementById('fileInfo').style.display = 'none';
+      document.getElementById('results').style.display = 'none';
+      currentFile = null;
+      currentHashes = {};
+    }
+
+    function showLoading() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('results').style.display = 'none';
+    }
+
+    function hideLoading() {
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    // Drag and drop functionality
+    const fileUpload = document.querySelector('.file-upload');
+    
+    fileUpload.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUpload.style.borderColor = 'var(--accent)';
+      fileUpload.style.background = 'rgba(16, 185, 129, 0.1)';
+    });
+    
+    fileUpload.addEventListener('dragleave', () => {
+      fileUpload.style.borderColor = 'var(--border)';
+      fileUpload.style.background = 'var(--bg)';
+    });
+    
+    fileUpload.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUpload.style.borderColor = 'var(--border)';
+      fileUpload.style.background = 'var(--bg)';
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        document.getElementById('fileInput').files = files;
+        handleFileSelect({ target: { files: files } });
+      }
+    });
+  </script>
+</body>
+</html>

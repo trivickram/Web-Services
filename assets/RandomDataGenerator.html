@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Data Generator - Generate Test Data | DevTools</title>
+  <meta name="description" content="Generate realistic fake data for testing: names, emails, addresses, phone numbers, and more. Perfect for developers, testers, and database seeding.">
+  <meta name="keywords" content="fake data generator, test data, random data, mock data, dummy data, lorem ipsum, developer tools, testing tools, database seeding">
+  <meta name="author" content="Baratam Trivickram">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Random Data Generator - Generate Test Data | DevTools">
+  <meta property="og:description" content="Professional fake data generation tool for developers and testers. Generate names, emails, addresses, and more for testing purposes.">
+  <meta property="og:url" content="https://devnestle.vercel.app/assets/RandomDataGenerator.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Random Data Generator - Generate Test Data | DevTools">
+  <meta name="twitter:description" content="Generate realistic test data instantly with customizable options for developers and database testing.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --text: #c9d1d9;
+      --accent: #f59e0b;
+      --border: #30363d;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --muted: #8b949e;
+      --secondary: #8b5cf6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: radial-gradient(circle at top left, #451a03, transparent 90%);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem;
+      flex: 1;
+    }
+
+    .generator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .generator-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .generator-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+
+    .card-header {
+      background: rgba(245, 158, 11, 0.1);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .generate-btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .generate-btn:hover {
+      background: #d97706;
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .options {
+      margin-bottom: 1rem;
+    }
+
+    .option-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      align-items: center;
+    }
+
+    .option-row label {
+      font-size: 0.9rem;
+      color: var(--text);
+      min-width: 80px;
+    }
+
+    .option-row input[type="number"] {
+      width: 80px;
+      padding: 0.4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .option-row select {
+      padding: 0.4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+
+    .checkbox-row label {
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .result-area {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.8rem;
+      min-height: 120px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .bulk-actions {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .bulk-actions h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .bulk-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .bulk-controls label {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .bulk-controls input[type="number"] {
+      width: 100px;
+      padding: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+    }
+
+    .bulk-controls select {
+      padding: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+    }
+
+    .bulk-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .bulk-btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .primary-bulk-btn {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .primary-bulk-btn:hover {
+      background: #d97706;
+      transform: translateY(-2px);
+    }
+
+    .secondary-bulk-btn {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .secondary-bulk-btn:hover {
+      background: #7c3aed;
+    }
+
+    .bulk-result {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 1rem;
+      min-height: 200px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      overflow-y: auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .generator-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .option-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .bulk-controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .bulk-buttons {
+        flex-direction: column;
+      }
+      
+      .bulk-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎲 Random Data Generator</h1>
+    <p>Generate realistic fake data for testing and development</p>
+  </header>
+
+  <div class="container">
+    <div class="generator-grid">
+      <!-- Names Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">👤 Names</div>
+          <button class="generate-btn" onclick="generateNames()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="nameCount" value="5" min="1" max="100">
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="includeMiddle">
+              <label for="includeMiddle">Include middle names</label>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="femaleNames">
+              <label for="femaleNames">Female names only</label>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="maleNames">
+              <label for="maleNames">Male names only</label>
+            </div>
+          </div>
+          <div class="result-area" id="namesResult">
+            <button class="copy-btn" onclick="copyResult('namesResult')">Copy</button>
+            Click Generate to create random names
+          </div>
+        </div>
+      </div>
+
+      <!-- Emails Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">📧 Emails</div>
+          <button class="generate-btn" onclick="generateEmails()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="emailCount" value="5" min="1" max="100">
+            </div>
+            <div class="option-row">
+              <label>Domain:</label>
+              <select id="emailDomain">
+                <option value="random">Random</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="yahoo.com">yahoo.com</option>
+                <option value="outlook.com">outlook.com</option>
+                <option value="company.com">company.com</option>
+                <option value="test.com">test.com</option>
+              </select>
+            </div>
+          </div>
+          <div class="result-area" id="emailsResult">
+            <button class="copy-btn" onclick="copyResult('emailsResult')">Copy</button>
+            Click Generate to create random emails
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone Numbers Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">📱 Phone Numbers</div>
+          <button class="generate-btn" onclick="generatePhones()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="phoneCount" value="5" min="1" max="100">
+            </div>
+            <div class="option-row">
+              <label>Format:</label>
+              <select id="phoneFormat">
+                <option value="us">(XXX) XXX-XXXX</option>
+                <option value="international">+1-XXX-XXX-XXXX</option>
+                <option value="simple">XXX-XXX-XXXX</option>
+                <option value="dots">XXX.XXX.XXXX</option>
+              </select>
+            </div>
+          </div>
+          <div class="result-area" id="phonesResult">
+            <button class="copy-btn" onclick="copyResult('phonesResult')">Copy</button>
+            Click Generate to create phone numbers
+          </div>
+        </div>
+      </div>
+
+      <!-- Addresses Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">🏠 Addresses</div>
+          <button class="generate-btn" onclick="generateAddresses()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="addressCount" value="3" min="1" max="50">
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="includeApt" checked>
+              <label for="includeApt">Include apartment numbers</label>
+            </div>
+          </div>
+          <div class="result-area" id="addressesResult">
+            <button class="copy-btn" onclick="copyResult('addressesResult')">Copy</button>
+            Click Generate to create addresses
+          </div>
+        </div>
+      </div>
+
+      <!-- Lorem Ipsum Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">📝 Lorem Ipsum</div>
+          <button class="generate-btn" onclick="generateLorem()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Type:</label>
+              <select id="loremType">
+                <option value="paragraphs">Paragraphs</option>
+                <option value="sentences">Sentences</option>
+                <option value="words">Words</option>
+              </select>
+            </div>
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="loremCount" value="3" min="1" max="50">
+            </div>
+          </div>
+          <div class="result-area" id="loremResult">
+            <button class="copy-btn" onclick="copyResult('loremResult')">Copy</button>
+            Click Generate to create Lorem Ipsum text
+          </div>
+        </div>
+      </div>
+
+      <!-- Numbers Generator -->
+      <div class="generator-card">
+        <div class="card-header">
+          <div class="card-title">🔢 Numbers</div>
+          <button class="generate-btn" onclick="generateNumbers()">Generate</button>
+        </div>
+        <div class="card-content">
+          <div class="options">
+            <div class="option-row">
+              <label>Count:</label>
+              <input type="number" id="numberCount" value="10" min="1" max="1000">
+            </div>
+            <div class="option-row">
+              <label>Min:</label>
+              <input type="number" id="numberMin" value="1">
+            </div>
+            <div class="option-row">
+              <label>Max:</label>
+              <input type="number" id="numberMax" value="100">
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="uniqueNumbers">
+              <label for="uniqueNumbers">Unique numbers only</label>
+            </div>
+          </div>
+          <div class="result-area" id="numbersResult">
+            <button class="copy-btn" onclick="copyResult('numbersResult')">Copy</button>
+            Click Generate to create random numbers
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bulk-actions">
+      <h3>🚀 Bulk Data Generation</h3>
+      <div class="bulk-controls">
+        <label>Records:</label>
+        <input type="number" id="bulkCount" value="100" min="1" max="10000">
+        
+        <label>Format:</label>
+        <select id="bulkFormat">
+          <option value="csv">CSV</option>
+          <option value="json">JSON</option>
+          <option value="sql">SQL INSERT</option>
+          <option value="txt">Plain Text</option>
+        </select>
+        
+        <label>Table Name:</label>
+        <input type="text" id="tableName" value="users" placeholder="users">
+      </div>
+      
+      <div class="bulk-buttons">
+        <button class="bulk-btn primary-bulk-btn" onclick="generateBulkData()">Generate Dataset</button>
+        <button class="bulk-btn secondary-bulk-btn" onclick="downloadBulkData()">Download</button>
+        <button class="bulk-btn secondary-bulk-btn" onclick="copyBulkData()">Copy All</button>
+      </div>
+      
+      <div class="bulk-result" id="bulkResult">
+        Bulk generated data will appear here...
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 DevToolsHub • Random Data Generator by 
+    <a href="https://trivickram.vercel.app" target="_blank" rel="noopener">Trivikram</a>
+  </footer>
+
+  <script>
+    // Data arrays
+    const firstNames = {
+      male: ['James', 'John', 'Robert', 'Michael', 'William', 'David', 'Richard', 'Charles', 'Joseph', 'Thomas', 'Christopher', 'Daniel', 'Paul', 'Mark', 'Donald', 'Steven', 'Kenneth', 'Andrew', 'Joshua', 'Kevin'],
+      female: ['Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara', 'Susan', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Betty', 'Helen', 'Sandra', 'Donna', 'Carol', 'Ruth', 'Sharon', 'Michelle']
+    };
+
+    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin'];
+
+    const streetNames = ['Main St', 'Oak Ave', 'Park Rd', 'Elm St', 'Washington Ave', 'Maple Dr', 'Cedar Ln', 'Pine St', 'Lake Rd', 'Hill Ave', 'Church St', 'School Rd', 'Forest Dr', 'Sunset Blvd', 'River Rd'];
+
+    const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'Jacksonville', 'Fort Worth', 'Columbus', 'Charlotte'];
+
+    const states = ['NY', 'CA', 'IL', 'TX', 'AZ', 'PA', 'FL', 'OH', 'NC', 'GA', 'MI', 'NJ', 'VA', 'WA', 'MA'];
+
+    const emailDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'company.com', 'test.com', 'example.org'];
+
+    const loremWords = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo', 'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'];
+
+    let bulkData = '';
+
+    function getRandomItem(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generateNames() {
+      const count = parseInt(document.getElementById('nameCount').value);
+      const includeMiddle = document.getElementById('includeMiddle').checked;
+      const femaleOnly = document.getElementById('femaleNames').checked;
+      const maleOnly = document.getElementById('maleNames').checked;
+      
+      let names = [];
+      
+      for (let i = 0; i < count; i++) {
+        let firstName;
+        if (femaleOnly) {
+          firstName = getRandomItem(firstNames.female);
+        } else if (maleOnly) {
+          firstName = getRandomItem(firstNames.male);
+        } else {
+          const gender = Math.random() > 0.5 ? 'male' : 'female';
+          firstName = getRandomItem(firstNames[gender]);
+        }
+        
+        let fullName = firstName;
+        
+        if (includeMiddle) {
+          const middleName = getRandomItem([...firstNames.male, ...firstNames.female]);
+          fullName += ` ${middleName}`;
+        }
+        
+        fullName += ` ${getRandomItem(lastNames)}`;
+        names.push(fullName);
+      }
+      
+      document.getElementById('namesResult').innerHTML = `<button class="copy-btn" onclick="copyResult('namesResult')">Copy</button>${names.join('\n')}`;
+    }
+
+    function generateEmails() {
+      const count = parseInt(document.getElementById('emailCount').value);
+      const domain = document.getElementById('emailDomain').value;
+      
+      let emails = [];
+      
+      for (let i = 0; i < count; i++) {
+        const firstName = getRandomItem([...firstNames.male, ...firstNames.female]).toLowerCase();
+        const lastName = getRandomItem(lastNames).toLowerCase();
+        const number = Math.floor(Math.random() * 999);
+        
+        let emailDomain;
+        if (domain === 'random') {
+          emailDomain = getRandomItem(emailDomains);
+        } else {
+          emailDomain = domain;
+        }
+        
+        const email = `${firstName}.${lastName}${Math.random() > 0.5 ? number : ''}@${emailDomain}`;
+        emails.push(email);
+      }
+      
+      document.getElementById('emailsResult').innerHTML = `<button class="copy-btn" onclick="copyResult('emailsResult')">Copy</button>${emails.join('\n')}`;
+    }
+
+    function generatePhones() {
+      const count = parseInt(document.getElementById('phoneCount').value);
+      const format = document.getElementById('phoneFormat').value;
+      
+      let phones = [];
+      
+      for (let i = 0; i < count; i++) {
+        const area = Math.floor(Math.random() * 900) + 100;
+        const exchange = Math.floor(Math.random() * 900) + 100;
+        const number = Math.floor(Math.random() * 9000) + 1000;
+        
+        let phone;
+        switch (format) {
+          case 'us':
+            phone = `(${area}) ${exchange}-${number}`;
+            break;
+          case 'international':
+            phone = `+1-${area}-${exchange}-${number}`;
+            break;
+          case 'simple':
+            phone = `${area}-${exchange}-${number}`;
+            break;
+          case 'dots':
+            phone = `${area}.${exchange}.${number}`;
+            break;
+        }
+        
+        phones.push(phone);
+      }
+      
+      document.getElementById('phonesResult').innerHTML = `<button class="copy-btn" onclick="copyResult('phonesResult')">Copy</button>${phones.join('\n')}`;
+    }
+
+    function generateAddresses() {
+      const count = parseInt(document.getElementById('addressCount').value);
+      const includeApt = document.getElementById('includeApt').checked;
+      
+      let addresses = [];
+      
+      for (let i = 0; i < count; i++) {
+        const streetNumber = Math.floor(Math.random() * 9999) + 1;
+        const street = getRandomItem(streetNames);
+        const city = getRandomItem(cities);
+        const state = getRandomItem(states);
+        const zip = Math.floor(Math.random() * 90000) + 10000;
+        
+        let address = `${streetNumber} ${street}`;
+        
+        if (includeApt && Math.random() > 0.6) {
+          const aptNumber = Math.floor(Math.random() * 999) + 1;
+          address += `, Apt ${aptNumber}`;
+        }
+        
+        address += `\n${city}, ${state} ${zip}`;
+        addresses.push(address);
+      }
+      
+      document.getElementById('addressesResult').innerHTML = `<button class="copy-btn" onclick="copyResult('addressesResult')">Copy</button>${addresses.join('\n\n')}`;
+    }
+
+    function generateLorem() {
+      const type = document.getElementById('loremType').value;
+      const count = parseInt(document.getElementById('loremCount').value);
+      
+      let result = [];
+      
+      if (type === 'words') {
+        for (let i = 0; i < count; i++) {
+          result.push(getRandomItem(loremWords));
+        }
+        result = result.join(' ');
+      } else if (type === 'sentences') {
+        for (let i = 0; i < count; i++) {
+          const sentenceLength = Math.floor(Math.random() * 15) + 5;
+          let sentence = [];
+          for (let j = 0; j < sentenceLength; j++) {
+            sentence.push(getRandomItem(loremWords));
+          }
+          sentence[0] = sentence[0].charAt(0).toUpperCase() + sentence[0].slice(1);
+          result.push(sentence.join(' ') + '.');
+        }
+        result = result.join(' ');
+      } else { // paragraphs
+        for (let i = 0; i < count; i++) {
+          const sentences = Math.floor(Math.random() * 5) + 3;
+          let paragraph = [];
+          for (let j = 0; j < sentences; j++) {
+            const sentenceLength = Math.floor(Math.random() * 15) + 5;
+            let sentence = [];
+            for (let k = 0; k < sentenceLength; k++) {
+              sentence.push(getRandomItem(loremWords));
+            }
+            sentence[0] = sentence[0].charAt(0).toUpperCase() + sentence[0].slice(1);
+            paragraph.push(sentence.join(' ') + '.');
+          }
+          result.push(paragraph.join(' '));
+        }
+        result = result.join('\n\n');
+      }
+      
+      document.getElementById('loremResult').innerHTML = `<button class="copy-btn" onclick="copyResult('loremResult')">Copy</button>${result}`;
+    }
+
+    function generateNumbers() {
+      const count = parseInt(document.getElementById('numberCount').value);
+      const min = parseInt(document.getElementById('numberMin').value);
+      const max = parseInt(document.getElementById('numberMax').value);
+      const unique = document.getElementById('uniqueNumbers').checked;
+      
+      let numbers = [];
+      let used = new Set();
+      
+      for (let i = 0; i < count; i++) {
+        let number;
+        if (unique) {
+          do {
+            number = Math.floor(Math.random() * (max - min + 1)) + min;
+          } while (used.has(number) && used.size < (max - min + 1));
+          used.add(number);
+        } else {
+          number = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        numbers.push(number);
+      }
+      
+      document.getElementById('numbersResult').innerHTML = `<button class="copy-btn" onclick="copyResult('numbersResult')">Copy</button>${numbers.join('\n')}`;
+    }
+
+    function generateBulkData() {
+      const count = parseInt(document.getElementById('bulkCount').value);
+      const format = document.getElementById('bulkFormat').value;
+      const tableName = document.getElementById('tableName').value || 'users';
+      
+      let data = [];
+      
+      // Generate data records
+      for (let i = 0; i < count; i++) {
+        const gender = Math.random() > 0.5 ? 'male' : 'female';
+        const firstName = getRandomItem(firstNames[gender]);
+        const lastName = getRandomItem(lastNames);
+        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${getRandomItem(emailDomains)}`;
+        const phone = `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`;
+        const age = Math.floor(Math.random() * 50) + 18;
+        const streetNumber = Math.floor(Math.random() * 9999) + 1;
+        const street = getRandomItem(streetNames);
+        const city = getRandomItem(cities);
+        const state = getRandomItem(states);
+        const zip = Math.floor(Math.random() * 90000) + 10000;
+        
+        data.push({
+          id: i + 1,
+          firstName,
+          lastName,
+          email,
+          phone,
+          age,
+          address: `${streetNumber} ${street}`,
+          city,
+          state,
+          zipCode: zip
+        });
+      }
+      
+      // Format data
+      let output = '';
+      
+      switch (format) {
+        case 'csv':
+          output = 'id,firstName,lastName,email,phone,age,address,city,state,zipCode\n';
+          output += data.map(row => 
+            `${row.id},"${row.firstName}","${row.lastName}","${row.email}","${row.phone}",${row.age},"${row.address}","${row.city}","${row.state}",${row.zipCode}`
+          ).join('\n');
+          break;
+          
+        case 'json':
+          output = JSON.stringify(data, null, 2);
+          break;
+          
+        case 'sql':
+          output = `INSERT INTO ${tableName} (firstName, lastName, email, phone, age, address, city, state, zipCode) VALUES\n`;
+          output += data.map(row => 
+            `('${row.firstName}', '${row.lastName}', '${row.email}', '${row.phone}', ${row.age}, '${row.address}', '${row.city}', '${row.state}', ${row.zipCode})`
+          ).join(',\n') + ';';
+          break;
+          
+        case 'txt':
+          output = data.map(row => 
+            `${row.firstName} ${row.lastName} | ${row.email} | ${row.phone} | Age: ${row.age} | ${row.address}, ${row.city}, ${row.state} ${row.zipCode}`
+          ).join('\n');
+          break;
+      }
+      
+      bulkData = output;
+      document.getElementById('bulkResult').textContent = output;
+    }
+
+    function downloadBulkData() {
+      if (!bulkData) {
+        alert('Generate data first');
+        return;
+      }
+      
+      const format = document.getElementById('bulkFormat').value;
+      const blob = new Blob([bulkData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `random_data.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function copyBulkData() {
+      if (!bulkData) {
+        alert('Generate data first');
+        return;
+      }
+      
+      navigator.clipboard.writeText(bulkData).then(() => {
+        alert('Bulk data copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy data');
+      });
+    }
+
+    function copyResult(elementId) {
+      const element = document.getElementById(elementId);
+      const text = element.textContent.replace('Copy', '').trim();
+      
+      if (!text || text === 'Click Generate to create random names' || text.includes('Click Generate')) {
+        alert('No data to copy');
+        return;
+      }
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const button = element.querySelector('.copy-btn');
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = 'var(--success)';
+        button.style.color = '#fff';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = 'transparent';
+          button.style.color = 'var(--accent)';
+        }, 1000);
+      }).catch(() => {
+        alert('Failed to copy');
+      });
+    }
+  </script>
+</body>
+</html>
