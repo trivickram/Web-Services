@@ -110,6 +110,28 @@
       >
     </header>
 
+    <div class="search-container">
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search for tools..."
+          autocomplete="off"
+        />
+        <button class="search-clear" id="searchClear" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
     <section class="tools-section" id="tools-section">
       <div class="tool-card">
         <a
@@ -290,6 +312,145 @@
         Trivikram
       </a>
     </footer>
+    
+    <script>
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      const searchClear = document.getElementById('searchClear');
+      const toolCards = document.querySelectorAll('.tool-card');
+      
+      // Tool data for search
+      const tools = [
+        { element: toolCards[0], keywords: ['password', 'generator', 'secure', 'random', 'symbols', 'security', 'auth', 'login'] },
+        { element: toolCards[1], keywords: ['qr', 'code', 'generator', 'url', 'text', 'scan', 'barcode', 'quick', 'response'] },
+        { element: toolCards[2], keywords: ['todo', 'to-do', 'list', 'task', 'manage', 'organize', 'productivity', 'planner'] },
+        { element: toolCards[3], keywords: ['markdown', 'previewer', 'convert', 'html', 'md', 'preview', 'documentation', 'format'] },
+        { element: toolCards[4], keywords: ['color', 'picker', 'hex', 'rgb', 'palette', 'design', 'ui', 'css', 'colors'] },
+        { element: toolCards[5], keywords: ['word', 'counter', 'text', 'analyze', 'characters', 'writing', 'count', 'analytics'] },
+        { element: toolCards[6], keywords: ['json', 'formatter', 'validator', 'parse', 'format', 'validate', 'api', 'data'] },
+        { element: toolCards[7], keywords: ['meta', 'tag', 'generator', 'seo', 'html', 'website', 'optimization', 'tags'] },
+        { element: toolCards[8], keywords: ['image', 'compressor', 'compress', 'reduce', 'size', 'quality', 'optimize', 'photo'] },
+        { element: toolCards[9], keywords: ['url', 'encoder', 'decoder', 'encode', 'decode', 'web', 'link', 'address'] },
+        { element: toolCards[10], keywords: ['base64', 'encoder', 'decoder', 'encode', 'decode', 'data', 'convert', 'binary'] },
+        { element: toolCards[11], keywords: ['css', 'minifier', 'minify', 'compress', 'stylesheet', 'optimize', 'reduce', 'size'] },
+        { element: toolCards[12], keywords: ['regex', 'tester', 'regular', 'expression', 'pattern', 'match', 'test', 'validation'] },
+        { element: toolCards[13], keywords: ['hash', 'generator', 'md5', 'sha1', 'sha256', 'checksum', 'verify', 'security'] },
+        { element: toolCards[14], keywords: ['uuid', 'generator', 'unique', 'identifier', 'id', 'database', 'application', 'guid'] },
+        { element: toolCards[15], keywords: ['random', 'data', 'generator', 'fake', 'test', 'mock', 'names', 'emails', 'addresses'] }
+      ];
+      
+      // Calculate similarity score between search term and keywords
+      function calculateScore(searchTerm, keywords) {
+        const term = searchTerm.toLowerCase();
+        let score = 0;
+        
+        keywords.forEach(keyword => {
+          const keywordLower = keyword.toLowerCase();
+          
+          // Exact match gets highest score
+          if (keywordLower === term) {
+            score += 100;
+          }
+          // Keyword contains search term
+          else if (keywordLower.includes(term)) {
+            score += 80;
+          }
+          // Search term contains keyword
+          else if (term.includes(keywordLower)) {
+            score += 60;
+          }
+          // Similar starting characters
+          else if (keywordLower.startsWith(term.charAt(0)) && term.length > 0) {
+            score += 20;
+          }
+          // Fuzzy matching - character overlap
+          else {
+            const overlap = getCharacterOverlap(term, keywordLower);
+            if (overlap > 0.4) { // 40% character overlap
+              score += Math.floor(overlap * 40);
+            }
+          }
+        });
+        
+        return score;
+      }
+      
+      // Calculate character overlap percentage
+      function getCharacterOverlap(str1, str2) {
+        const chars1 = str1.split('');
+        const chars2 = str2.split('');
+        let matches = 0;
+        
+        chars1.forEach(char => {
+          if (chars2.includes(char)) {
+            matches++;
+          }
+        });
+        
+        return matches / Math.max(str1.length, str2.length);
+      }
+      
+      // Filter and sort tools based on search
+      function filterTools(searchTerm) {
+        if (!searchTerm.trim()) {
+          // Show all tools when search is empty
+          tools.forEach(tool => {
+            tool.element.style.display = 'block';
+          });
+          return;
+        }
+        
+        // Calculate scores for all tools
+        const scoredTools = tools.map(tool => ({
+          ...tool,
+          score: calculateScore(searchTerm, tool.keywords)
+        }));
+        
+        // Sort by score (highest first)
+        scoredTools.sort((a, b) => b.score - a.score);
+        
+        // Show tools with score > 0, hide others
+        scoredTools.forEach(tool => {
+          if (tool.score > 0) {
+            tool.element.style.display = 'block';
+          } else {
+            tool.element.style.display = 'none';
+          }
+        });
+      }
+      
+      // Search input event listener
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value;
+        
+        // Show/hide clear button
+        if (searchTerm) {
+          searchClear.style.display = 'block';
+        } else {
+          searchClear.style.display = 'none';
+        }
+        
+        // Filter tools
+        filterTools(searchTerm);
+      });
+      
+      // Clear search
+      searchClear.addEventListener('click', function() {
+        searchInput.value = '';
+        searchClear.style.display = 'none';
+        filterTools('');
+        searchInput.focus();
+      });
+      
+      // Focus search on '/' key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    </script>
+    
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
